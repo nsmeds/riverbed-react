@@ -1,24 +1,320 @@
-.App {
+/**** Base Styles ****/
+
+body {
+  font-family: 'Lato', sans-serif;
+  display: flex;
+  flex-direction: column;
+  color: hsl(40,10%,20%);
+  margin: 0;
   text-align: center;
+  scroll-behavior: smooth;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+#main {
+  scroll-behavior: smooth;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+header {
+  display: inline-block;
+  border-bottom: 2px solid #000;
 }
 
-.App-intro {
-  font-size: large;
+h1,
+h2,
+h4 {
+  font-weight: 300;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+h1 {
+  text-transform: uppercase;
+  font-size: 4em;
+  margin-bottom: 0;
+  margin-top: 0.3em;
+  letter-spacing: 0.5em;
+  padding: 0 0 0 0.5em;
+}
+
+h4 {
+  margin-bottom: 0.5em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 400;
+}
+
+a:hover {
+  opacity: 0.5;
+}
+
+a:active {
+  opacity: 0.3;
+}
+
+/**** Nav/Menu Styles ****/
+
+.nav,
+#issue-desc {
+  text-transform: uppercase;
+}
+
+.nav,
+#issue-desc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#main {
+  max-width: 967px;
+  margin: 0 auto;
+}
+
+#nav-menu-ul {
+  font-weight: 300;
+  font-size: 0.8em;
+  margin-top: 0.5em;
+}
+
+#nav-menu-ul li {
+  padding: 0.5em 1em;
+}
+
+#issue-desc {
+  margin: 0.5em auto 2em auto;
+  background-image: url(/images/kings.jpeg);
+  background-color: hsla(40,10%,50%,0.5);
+  background-blend-mode: color-burn;
+  height: 75vh;
+  background-position: center;
+  background-size: cover;
+  color: #fff;
+  flex-basis: 1;
+}
+
+#issue-desc span {
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  font-size: 0.9em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.nav-ul {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 90vw;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.nav-ul li {
+  list-style: none;
+}
+
+.li-hide {
+  display: none; /* Hiding until there is content to link to. */
+}
+
+#contributors {
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
+#contributors li {
+  padding: 1em 1em;
+}
+
+/**** Main Content Styles ****/
+
+#main-content {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#main-content a {
+  color: hsl(200,50%,50%)
+}
+
+.item {
+  text-align: left;
+  max-width: 600px;
+  padding: 5% 5%;
+  border-top: 1px solid #ccc;
+  font-weight: 400;
+  min-height: 100vh;
+}
+
+.item h3 {
+  margin: 0 auto 0.2em auto;
+  font-weight: 400;
+}
+
+.item h5 {
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.bio {
+  font-size: 0.9em;
+  font-style: italic;
+  font-weight: 300;
+  max-width: 60%;
+  margin-bottom: 0.2em;
+}
+
+.item:last-of-type {
+  min-height: 78vh;
+}
+
+.scrollToTop {
+  display: none;
+  position: fixed;
+  right: 50%;
+  bottom: 32px;
+  z-index: 999;
+  overflow: hidden;
+}
+
+/**** Menu-Item Styles ****/
+
+.menu-item {
+  color: #fff;
+  height: 70vh;
+  border: 1px solid #fff;
+  max-width: 600px;
+  padding: 0 2em 4em 2em;
+  margin: 0.5em auto 2em auto;
+  background-image: url(/images/canoe.jpg);
+  background-color: hsla(40,10%,0%,0.5);
+  background-blend-mode: overlay;
+  background-position: center;
+  background-size: cover;
+}
+
+.menu-item h2 {
+  display: inline-block;
+  text-transform: uppercase;
+  border-bottom: 1px solid #fff;
+  font-size: 1.4em;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  padding: 0.2em 0.2em 0.2em 0.3em;
+}
+
+.menu-item p,
+.menu-item ul {
+  border: 1px solid white;
+  font-weight: 300;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1em;
+}
+
+.menu-item p {
+  text-align: left;
+}
+
+/**** Form Styles ****/
+
+.form {
+  display: flex;
+  flex-direction: column;
+/*  margin: 2em auto;*/
+
+/*  max-width: 20em;*/
+  padding: 1em;
+/*  border: 1px solid white;*/
+}
+
+.form input,
+.form textarea,
+select,
+button {
+  align-self: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-weight: 300;
+  width: 20em;
+}
+
+.form textarea {
+  height: 8em;
+  width: 20em;
+}
+
+.form .button {
+  color: inherit;
+  background-color: hsla(0,100%,100%,0);
+  border-radius: 3px;
+  font-weight: 400;
+  border: 1px solid #fff;
+  width: auto;
+}
+
+.button:active {
+  background-color: hsla(0,100%,100%,0.3);
+  border-color: transparent;
+  box-shadow: inset 1 5px 5px -5px hsla(190,10%,10%,1);
+}
+
+.new-post-form {
+  align-items: flex-end;
+  padding-right: 25%;
+  padding-left: 25%;
+}
+
+/**** Footer Styles ****/
+
+#sub-footer {
+  display: flex;
+  justify-content: center;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  border-top: 1px solid #000;
+  background-color: hsl(40,10%,10%);
+  background-blend-mode: overlay;
+  background-position: top;
+  color: #fff;
+}
+
+/**** Media Queries ****/
+
+@media screen and (max-width: 640px) {
+
+  h1 {
+    font-size: 3em;
+    letter-spacing: 0.3em;
+    padding: 0 0 0 0.3em;
+  }
+  
+  h4 {
+    font-size: 1em;
+    margin-top: 0.3em;
+  }
+}
+
+
+@media screen and (max-width: 480px) {
+
+  h1 {
+    font-size: 2em;
+    letter-spacing: 0.2em;
+    padding: 0 0 0 0.1em;
+  }
+  
+  h4 {
+    font-size: 1em;
+    margin-top: 0.3em;
+  }
 }
