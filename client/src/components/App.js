@@ -15,7 +15,7 @@ class App extends Component {
                 <li><Link to="/admin">Admin</Link></li>
             </ul>
         </nav>
-
+        { this.props.children }
       </div>
     );
   }
