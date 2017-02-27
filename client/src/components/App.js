@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import Contributors from './Contributors';
+import MainContent from './MainContent';
 
 class App extends Component {
 
@@ -44,6 +45,7 @@ class App extends Component {
             </ul>
         </nav>
         <Contributors data={this.state.posts} />
+        <MainContent data={this.state.posts} />
         { this.props.children }
       </div>
     );
