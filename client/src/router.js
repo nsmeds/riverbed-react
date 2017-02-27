@@ -8,13 +8,16 @@ import Home from './components/Home';
 import About from './components/About';
 import Admin from './components/Admin';
 import Contact from './components/Contact';
+import Contributors from './components/Contributors';
 
 // Routes
 const routes = (
     <Router history={browserHistory}>
         <Route component={App}>
             <Route path="/" component={Home} />
-            <Route path="home" component={Home} />
+            <Route path="home" component={Home}>
+                <Route path="contributors" component={Contributors}></Route>
+            </Route>
             <Route path="about" component={About} />
             <Route path="admin" component={Admin} />
             <Route path="contact" component={Contact} />

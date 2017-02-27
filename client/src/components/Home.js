@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
+import Contributors from './Contributors';
 
 class Home extends Component {
     render() {
         return (
-            <div id="issue-desc" className="bg-blend">
-                <span>New Writing By</span>
-                <ul id="contributors" className="nav-ul">
-                    
-                </ul>
+            <div>
+                {/*<Contributors data={this.state.posts} />*/}
+                {this.props.children}
             </div>
         );
     }
