@@ -4,7 +4,7 @@ const MainContent = props => {
 
     let results = props.data;
     let posts = results.map(post => 
-        <div className="item" key={post._id}>
+        <div className="item" key={post._id} id={post._id}>
             <h3>{post.title}</h3>
             <h5>by {post.author.name}</h5>
             <p>{post.text}</p>
