@@ -5,10 +5,11 @@ import MainContent from './MainContent';
 
 class Home extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      posts: []
+      posts: [],
+      issue: this.props
     };
   }
 
@@ -20,7 +21,8 @@ class Home extends Component {
     axios.get(`http://localhost:3001/api/posts`)
       .then(response => {
         this.setState({
-          posts: response.data
+          posts: response.data,
+          issue: this.state.issue
         });
       })
       .catch(error => {
