@@ -57,8 +57,13 @@ class Admin extends Component {
                 authors: response.data
             });
         })
+        .then(() => {
+            this.setState({
+                author: this.state.authors[0]._id
+            })
+        })
         .catch(error => {
-            console.log('Error: could not GET posts. ', error);
+            console.log('Error: could not GET authors. ', error);
         })
     }
 
@@ -66,11 +71,16 @@ class Admin extends Component {
         axios.get(`http://localhost:3001/api/issues`)
         .then(response => {
             this.setState({
-                issues: response.data
+                issues: response.data,
             });
         })
+        .then(() => {
+            this.setState({
+                issue: this.state.issues[0]._id
+            })
+        })
         .catch(error => {
-            console.log('Error: could not GET posts. ', error);
+            console.log('Error: could not GET issues. ', error);
         })
     }
 
