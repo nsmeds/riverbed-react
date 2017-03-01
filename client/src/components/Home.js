@@ -3,7 +3,19 @@ import axios from 'axios';
 import Contributors from './Contributors';
 import MainContent from './MainContent';
 
-class Home extends Component {
+const Home = props => {
+  let results = props.data;
+  console.log('props', props);
+
+  return (
+    <div>
+      <Contributors props={props}/>
+      <MainContent props={props}/>
+    </div>
+  )
+}
+
+/*class Home extends Component {
 
   constructor(props) {
     super(props);
@@ -11,6 +23,7 @@ class Home extends Component {
       posts: [],
       issue: this.props
     };
+    console.log('this.props', this.props);
   }
 
   componentDidMount() {
@@ -22,12 +35,12 @@ class Home extends Component {
       .then(response => {
         this.setState({
           posts: response.data,
-          issue: this.state.issue
+          issue: this.props
         });
       })
       .catch(error => {
         console.log('Error: could not GET posts. ', error);
-      })
+      });
   }
 
     render() {
@@ -39,6 +52,6 @@ class Home extends Component {
             </div>
         );
     }
-}
+}*/
 
 export default Home;

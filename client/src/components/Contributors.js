@@ -4,12 +4,13 @@ import { Link } from 'react-router';
 
 
 const Contributors = props => {
-    let results = props.data;
-    let contributors = results.map(contributor => 
-        // <Contributor name={contributor.author.name} key={contributor._id} />
-        <Link to={`#${contributor._id}`} key={contributor._id}>
-            <li key={contributor._id} id={contributor._id}>
-                {contributor.author.name}
+    console.log('props from Contributors', props);
+    console.log('props.props.data.posts', props.props.data.posts);
+    let results = props.props.data.posts;
+    let posts = results.map(post => 
+        <Link to={`#${post._id}`} key={post._id}>
+            <li key={post._id} id={post._id}>
+                {post.author.name}
             </li>
         </Link>
     );
@@ -18,7 +19,7 @@ const Contributors = props => {
         <div id="issue-desc" className="bg-blend">
             <span>New Writing By</span>
             <ul id="contributors" className="nav-ul">
-                {contributors}
+                {posts}
             </ul>
         </div>
     );

@@ -2,7 +2,7 @@ import React from 'react';
 
 const MainContent = props => {
 
-    let results = props.data;
+    let results = props.props.data.posts;
     let posts = results.map(post => 
         <div className="item" key={post._id} id={post._id}>
             <h3>{post.title}</h3>

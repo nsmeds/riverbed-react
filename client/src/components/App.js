@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
+import Home from './Home';
+
+
 class App extends Component {
 
 
   constructor() {
     super();
     this.state = {
-      currentIssue: {}
+      currentIssue: {},
+      loading: true
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getCurrentIssue();
   }
 
   getCurrentIssue = () => {
     axios.get('http://localhost:3001/api/issues')
       .then(response => {
-        let curr = response.data[response.data.length - 1];
-        this.setState({
-          currentIssue: curr
-        })
+        let currRef = response.data[response.data.length - 1];
+        axios.get(`http://localhost:3001/api/issues/${currRef._id}`)
+          .then(response => {
+            this.setState({
+              currentIssue: response.data,
+              loading: false
+            });
+          })
       })
       .catch(error => {
         console.log('Error: could not GET current issue. ', error);
@@ -35,7 +43,7 @@ class App extends Component {
     return ( 
       <div>
         <div id="header">
-          <Link to="index"><h1>Riverbed</h1></Link>
+          <Link to="/"><h1>Riverbed</h1></Link>
           <h4>{this.state.currentIssue.title} | Vol. 1, No. 1</h4>
           <nav className="nav">
               <ul id="nav-menu-ul" className="nav-ul">
@@ -46,7 +54,12 @@ class App extends Component {
               </ul>
           </nav>
         </div>
-        { clonedChildren }
+        <div>
+          {
+            (this.state.loading) ? <p>Loading ... </p> : <Home data={this.state.currentIssue} />
+          }
+
+        </div>
       </div>
     );
   }
