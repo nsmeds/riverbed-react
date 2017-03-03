@@ -3,9 +3,7 @@ import { Link } from 'react-router';
 import axios from 'axios';
 import Home from './Home';
 
-
 class App extends Component {
-
 
   constructor() {
     super();
@@ -15,7 +13,7 @@ class App extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getCurrentIssue();
   }
 
@@ -58,7 +56,6 @@ class App extends Component {
           {
             (this.state.loading) ? <p>Loading ... </p> : <Home data={this.state.currentIssue} />
           }
-
         </div>
       </div>
     );
