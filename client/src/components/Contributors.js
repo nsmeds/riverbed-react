@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 
 
 const Contributors = props => {
-    let results = props.props.data.posts;
+    console.log('props from Contributor', props.props.props.posts);
+    let results = props.props.props.posts;
     let posts = results.map(post => 
         <Link to={`#${post._id}`} key={post._id}>
             <li key={post._id} id={post._id}>

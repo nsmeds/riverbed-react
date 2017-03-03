@@ -54,7 +54,7 @@ class App extends Component {
         </div>
         <div>
           {
-            (this.state.loading) ? <p>Loading ... </p> : <Home data={this.state.currentIssue} />
+            (this.state.loading) ? <p>Loading ... </p> : <div>{this.props.children && clonedChildren}</div>
           }
         </div>
       </div>
