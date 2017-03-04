@@ -8,8 +8,21 @@ import Home from './components/Home';
 import About from './components/About';
 import Admin from './components/Admin';
 import Contact from './components/Contact';
-import { render } from 'react-dom';
+// import { render } from 'react-dom';
 // import Contributors from './components/Contributors';
+
+// function Scroll_To(elem, pos)
+// {
+//     var y = elem.scrollTop;
+//     y += (pos - y) * 0.3;
+//     if (Math.abs(y-pos) < 2)
+//     {
+//         elem.scrollTop = pos;
+//         return;
+//     }
+//     elem.scrollTop = y;
+//     setTimeout(Scroll_To, 40, elem, pos);   
+// }
 
 // Anchor link functionality
 function hashLinkScroll() {
@@ -28,7 +41,7 @@ function hashLinkScroll() {
 
 // Routes
 const routes = (
-    <Router history={browserHistory} onUpdate={hashLinkScroll} routes={routes}>
+    <Router history={browserHistory} onUpdate={hashLinkScroll}>
         <Route component={App}>
             {/*<IndexRedirect to="home" />*/}
             {/*<IndexRoute component={Home} />*/}

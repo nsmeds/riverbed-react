@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
-import Home from './Home';
+// import Home from './Home';
 
 class App extends Component {
 
@@ -36,7 +36,7 @@ class App extends Component {
 
   render() {
 
-    let clonedChildren = React.cloneElement(this.props.children, {props: this.state.currentIssue})
+    let clonedChildren = React.cloneElement(this.props.children, this.state.currentIssue)
 
     return ( 
       <div>
@@ -54,7 +54,7 @@ class App extends Component {
         </div>
         <div>
           {
-            (this.state.loading) ? <p>Loading ... </p> : <div>{this.props.children && clonedChildren}</div>
+            (this.state.loading) ? <p>Loading ... </p> : <div>{clonedChildren}</div>
           }
         </div>
       </div>

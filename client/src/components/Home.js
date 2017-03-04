@@ -9,8 +9,8 @@ const Home = props => {
 
   return (
     <div>
-      <Contributors props={props}/>
-      <MainContent props={props}/>
+      <Contributors {...props}/>
+      <MainContent {...props}/>
     </div>
   )
 }
