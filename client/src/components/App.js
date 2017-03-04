@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
-// import Home from './Home';
+import smoothScroll from 'smooth-scroll';
 
 class App extends Component {
 
@@ -15,6 +15,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getCurrentIssue();
+    smoothScroll.init({selector: 'a[href^="#"]'});
   }
 
   getCurrentIssue = () => {

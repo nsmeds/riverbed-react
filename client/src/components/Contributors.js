@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-
 const Contributors = props => {
     console.log('props from Contributor', props);
     let results = props.posts;
