@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React from 'react';
 import Contributors from './Contributors';
 import MainContent from './MainContent';
 
 const Home = props => {
-  let results = props.data;
-  console.log('props', props);
+
+  console.log('props from Home', props);
 
   return (
     <div>

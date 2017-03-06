@@ -34,9 +34,9 @@ class Admin extends Component {
 
         if (value === 'new') {
             if (name === 'author') {
-                ReactDOM.render(<NewAuthor />, document.getElementById(`new-${name}`))
+                ReactDOM.render(<NewAuthor {...this.props} />, document.getElementById(`new-${name}`))
             } else {
-                ReactDOM.render(<NewIssue />, document.getElementById(`new-${name}`))
+                ReactDOM.render(<NewIssue {...this.props} />, document.getElementById(`new-${name}`))
             }
         } else {
             this.setState({
@@ -49,7 +49,6 @@ class Admin extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log('this.state', this.state);
         axios.post('http://localhost:3001/api/posts', {
             title: this.state.title,
             text: this.state.text,
@@ -67,9 +66,14 @@ class Admin extends Component {
     getAuthors = () => {
         axios.get(`http://localhost:3001/api/authors`)
         .then(response => {
-            this.setState({
-                authors: response.data
-            });
+            // If no authors in DB, render NewAuthor component by default.
+            if (!response.data.length) {
+                ReactDOM.render(<NewAuthor {...this.props} />, document.getElementById('new-author'))
+            } else {
+                this.setState({
+                    authors: response.data
+                });
+            }
         })
         .then(() => {
             this.setState({
@@ -84,9 +88,14 @@ class Admin extends Component {
     getIssues = () => {
         axios.get(`http://localhost:3001/api/issues`)
         .then(response => {
-            this.setState({
-                issues: response.data,
-            });
+            // If no issues in DB, render NewIssue component by default.
+            if (!response.data.length) {
+                ReactDOM.render(<NewIssue {...this.props} />, document.getElementById('new-issue'))
+            } else {
+                this.setState({
+                    issues: response.data,
+                });
+            }
         })
         .then(() => {
             this.setState({
@@ -97,6 +106,7 @@ class Admin extends Component {
             console.log('Error: could not GET issues. ', error);
         })
     }
+
 
     render() {
         
@@ -118,7 +128,6 @@ class Admin extends Component {
                         <select name="author" value={this.state.author} onChange={this.handleInputChange}>
                             {authorList}
                             <option value="new">Add New ... </option>
-                            {/*<NewAuthor />*/}
                         </select>
                     </label>
                     <div id="new-author"></div>
@@ -126,7 +135,6 @@ class Admin extends Component {
                         <select name="issue" value={this.state.issue} onChange={this.handleInputChange}>
                             {issueList}
                             <option value="new">Add New ... </option>
-                            {/*<NewIssue />*/}
                         </select>
                     </label>
                     <div id="new-issue"></div>

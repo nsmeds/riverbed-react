@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const Contributors = props => {
-    console.log('props from Contributor', props);
+    // console.log('props from Contributors', props);
     let results = props.posts;
     let posts = results.map((post, index) => 
         <Link to={`#${post._id}`} key={index}>

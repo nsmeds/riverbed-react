@@ -1,6 +1,6 @@
 // Libs
 import React from 'react';
-import { Router, Route, browserHistory, IndexRedirect, IndexRoute } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 
 // Components
 import App from './components/App';
