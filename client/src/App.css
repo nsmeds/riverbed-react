@@ -270,6 +270,11 @@ button {
   padding-left: 25%;
 }
 
+.sub-form {
+  font-size: 0.8em;
+  font-weight: 400;
+}
+
 /**** Footer Styles ****/
 
 #sub-footer {

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import axios from 'axios';
+import NewAuthor from './NewAuthor';
+import NewIssue from './NewIssue';
 
 class Admin extends Component {
 
@@ -27,10 +30,21 @@ class Admin extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
+        console.log('event.target.value', event.target.value);
 
-        this.setState({
-            [name]: value
-        });
+        if (value === 'new') {
+            if (name === 'author') {
+                ReactDOM.render(<NewAuthor />, document.getElementById(`new-${name}`))
+            } else {
+                ReactDOM.render(<NewIssue />, document.getElementById(`new-${name}`))
+            }
+        } else {
+            this.setState({
+                [name]: value
+            });
+
+        }
+
     }
 
     handleSubmit(event) {
@@ -103,13 +117,19 @@ class Admin extends Component {
                     <label>Author:         
                         <select name="author" value={this.state.author} onChange={this.handleInputChange}>
                             {authorList}
+                            <option value="new">Add New ... </option>
+                            {/*<NewAuthor />*/}
                         </select>
                     </label>
+                    <div id="new-author"></div>
                     <label>Issue: 
                         <select name="issue" value={this.state.issue} onChange={this.handleInputChange}>
                             {issueList}
+                            <option value="new">Add New ... </option>
+                            {/*<NewIssue />*/}
                         </select>
                     </label>
+                    <div id="new-issue"></div>
                     <label>Content: <textarea name="text" value={this.state.text} onChange={this.handleInputChange}></textarea></label>
                     <button className="button">Submit</button>
                 </form>
