@@ -28,6 +28,7 @@ const NewIssue = props => {
 
     return (
         <div className="sub-form">
+            <div>New Issue</div>
             <label>Issue Date: 
                 <input type="text" name="title" value={newTitle} onChange={handleInputChange}/>
             </label>

@@ -33,7 +33,7 @@ const NewAuthor = props => {
 
     return (
         <div className="form sub-form">
-            <h5>New Author</h5>
+            <span>New Author</span>
             <label>Name: 
                 <input type="text" name="name" value={newAuthor.name} onChange={handleInputChange} />
             </label>
