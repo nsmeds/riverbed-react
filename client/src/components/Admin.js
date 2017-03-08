@@ -15,7 +15,8 @@ class Admin extends Component {
             issue: '',
             authors: [],
             issues: [],
-            shouldHide: true
+            hideNewauthor: true,
+            hideNewissue: true
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -36,10 +37,11 @@ class Admin extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
+        const hidden = 'hideNew' + target.name;
 
         if (value === 'new') {
             this.setState({
-                shouldHide: false
+                [hidden]: false
             })
             if (name === 'author') {
                     ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById(`new-${name}`));
@@ -62,6 +64,13 @@ class Admin extends Component {
             issue: this.state.issue
         })
         .then(response => {
+            // clear input fields
+            this.setState({
+                title: '',
+                text: '',
+                author: '',
+                issue: ''
+            });
             console.log('Successful POST to /posts: ', response);
         })
         .catch(error => {
@@ -79,7 +88,7 @@ class Admin extends Component {
             this.setState({
                 authors: this.state.authors.concat([response.data]),
                 author: response.data._id,
-                shouldHide: true
+                hideNewauthor: true
             });
             console.log('Successful POST to /authors: ', response);
         })
@@ -97,7 +106,7 @@ class Admin extends Component {
             this.setState({
                 issues: this.state.issues.concat([response.data]),
                 issue: response.data._id,
-                shouldHide: true
+                hideNewissue: true
             });
             console.log('Successful POST to /issues: ', response);
         })
@@ -173,14 +182,14 @@ class Admin extends Component {
                             <option value="new">Add New ... </option>
                         </select>
                     </label>
-                    <div id="new-author" className={this.state.shouldHide ? 'hidden' : ''}></div>
+                    <div id="new-author" className={this.state.hideNewauthor ? 'hidden' : ''}></div>
                     <label>Issue: 
                         <select name="issue" value={this.state.issue} onChange={this.handleInputChange}>
                             {issueList}
                             <option value="new">Add New ... </option>
                         </select>
                     </label>
-                    <div id="new-issue" className={this.state.shouldHide ? 'hidden' : ''}></div>
+                    <div id="new-issue" className={this.state.hideNewissue ? 'hidden' : ''}></div>
                     <label>Content: <textarea name="text" value={this.state.text} onChange={this.handleInputChange}></textarea></label>
                     <button className="button">Submit</button>
                 </form>
