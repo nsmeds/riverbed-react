@@ -4,7 +4,7 @@ import MainContent from './MainContent';
 
 const Home = props => {
 
-  console.log('props from Home', props);
+  // console.log('props from Home', props);
 
   return (
     <div>

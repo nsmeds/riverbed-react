@@ -52,6 +52,10 @@ a:active {
   opacity: 0.3;
 }
 
+.hidden {
+  display: none;
+}
+
 /**** Nav/Menu Styles ****/
 
 .nav,
