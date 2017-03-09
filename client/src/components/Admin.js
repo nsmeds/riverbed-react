@@ -120,17 +120,21 @@ class Admin extends Component {
         .then(response => {
             // If no authors in DB, render NewAuthor component by default.
             if (!response.data.length) {
-                ReactDOM.render(<NewAuthor {...this.props} />, document.getElementById('new-author'))
+                ReactDOM.render(<NewAuthor {...this.props} />, document.getElementById('new-author'));
+                this.setState({
+                    hideNewauthor: false
+                });
             } else {
                 this.setState({
-                    authors: response.data
-                });
+                    authors: response.data,
+                    author: response.data[0]._id
+                })
+                // .then(() => {
+                //     this.setState({
+                //         author: this.state.authors[0]._id
+                //     })
+                // });
             }
-        })
-        .then(() => {
-            this.setState({
-                author: this.state.authors[0]._id
-            })
         })
         .catch(error => {
             console.log('Error: could not GET authors. ', error);
@@ -142,17 +146,16 @@ class Admin extends Component {
         .then(response => {
             // If no issues in DB, render NewIssue component by default.
             if (!response.data.length) {
-                ReactDOM.render(<NewIssue {...this.props} />, document.getElementById('new-issue'))
+                ReactDOM.render(<NewIssue {...this.props} />, document.getElementById('new-issue'));
+                this.setState({
+                    hideNewissue: false
+                });
             } else {
                 this.setState({
                     issues: response.data,
+                    issue: response.data[0]._id
                 });
             }
-        })
-        .then(() => {
-            this.setState({
-                issue: this.state.issues[0]._id
-            })
         })
         .catch(error => {
             console.log('Error: could not GET issues. ', error);

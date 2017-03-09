@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
+import Admin from './Admin';
 
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      currentIssue: {},
+      currentIssue: {
+        _id: null,
+        title: 'No Current Issue',
+        posts: []
+      },
+      issues: [],
       loading: true
     };
   }
@@ -22,13 +29,33 @@ class App extends Component {
     axios.get('http://localhost:3001/api/issues')
       .then(response => {
         let currRef = response.data[response.data.length - 1];
-        axios.get(`http://localhost:3001/api/issues/${currRef._id}`)
-          .then(response => {
-            this.setState({
-              currentIssue: response.data,
-              loading: false
-            });
+        // if (!response.data.length) {
+        //   ReactDOM.render(<Admin />, document.getElementById('main'))
+        // } else {
+        //   axios.get(`http://localhost:3001/api/issues/${currRef._id}`)
+        //     .then(response => {
+        //       this.setState({
+        //         currentIssue: response.data,
+        //         loading: false
+        //       });
+        //     })
+        // }
+        if (!response.data.length) {
+          this.setState({
+            loading: false
+          });
+        } else {
+          this.setState({
+            issues: response.data
           })
+          axios.get(`http://localhost:3001/api/issues/${currRef._id}`)
+            .then(response => {
+              this.setState({
+                currentIssue: response.data,
+                loading: false
+              });
+            })
+        }
       })
       .catch(error => {
         console.log('Error: could not GET current issue. ', error);
@@ -53,7 +80,7 @@ class App extends Component {
               </ul>
           </nav>
         </div>
-        <div>
+        <div id="main">
           {
             (this.state.loading) ? <p>Loading ... </p> : <div>{clonedChildren}</div>
           }

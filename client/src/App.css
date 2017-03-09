@@ -105,6 +105,10 @@ a:active {
   margin-bottom: 1em;
 }
 
+.welcome {
+  text-transform: none;
+}
+
 .nav-ul {
   display: flex;
   justify-content: space-around;

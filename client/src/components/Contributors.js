@@ -14,7 +14,7 @@ const Contributors = props => {
 
     return (
         <div id="issue-desc" className="bg-blend">
-            <span>New Writing By</span>
+            {props.posts.length ? <span>New Writing By</span> : <span className="welcome">Welcome! Please visit <Link to="admin">Admin</Link> to add content.</span>}
             <ul id="contributors" className="nav-ul">
                 {posts}
             </ul>
