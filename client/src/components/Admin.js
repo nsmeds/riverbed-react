@@ -14,7 +14,7 @@ class Admin extends Component {
             author: '',
             issue: '',
             authors: [],
-            issues: [],
+            issues: this.props.issues,
             hideNewauthor: true,
             hideNewissue: true
         };
@@ -27,6 +27,10 @@ class Admin extends Component {
         this.getIssues = this.getIssues.bind(this);
 
     }
+
+    // componentWillMount() {
+    //     console.log('this.props', this.props);
+    // }
 
     componentDidMount() {
         this.getAuthors();
@@ -142,25 +146,40 @@ class Admin extends Component {
     }
 
     getIssues = () => {
-        axios.get(`http://localhost:3001/api/issues`)
-        .then(response => {
             // If no issues in DB, render NewIssue component by default.
-            if (!response.data.length) {
+            if (!this.state.issues.length) {
                 ReactDOM.render(<NewIssue {...this.props} />, document.getElementById('new-issue'));
                 this.setState({
                     hideNewissue: false
                 });
             } else {
                 this.setState({
-                    issues: response.data,
-                    issue: response.data[0]._id
+                    issue: this.state.issues[0]._id
                 });
             }
-        })
-        .catch(error => {
-            console.log('Error: could not GET issues. ', error);
-        })
     }
+
+    // OLD GETISSUES FUNCTION THAT DUPLICATED SERVER CALL
+    // getIssues = () => {
+    //     axios.get(`http://localhost:3001/api/issues`)
+    //     .then(response => {
+    //         // If no issues in DB, render NewIssue component by default.
+    //         if (!response.data.length) {
+    //             ReactDOM.render(<NewIssue {...this.props} />, document.getElementById('new-issue'));
+    //             this.setState({
+    //                 hideNewissue: false
+    //             });
+    //         } else {
+    //             this.setState({
+    //                 issues: response.data,
+    //                 issue: response.data[0]._id
+    //             });
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.log('Error: could not GET issues. ', error);
+    //     })
+    // }
 
 
     render() {
@@ -168,6 +187,8 @@ class Admin extends Component {
         let authorList = this.state.authors.map(author => 
             <option key={author._id} value={author._id}>{author.name}</option>
         );
+
+        // console.log('this.state.issues', this.state.issues);
 
         let issueList = this.state.issues.map(issue => 
             <option key={issue._id} value={issue._id}>{issue.title}</option>

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const Contributors = props => {
     // console.log('props from Contributors', props);
-    let results = props.posts;
+    let results = props.currentIssue.posts;
     let posts = results.map((post, index) => 
         <Link to={`#${post._id}`} key={index}>
             <li key={post._id}>
@@ -14,7 +14,7 @@ const Contributors = props => {
 
     return (
         <div id="issue-desc" className="bg-blend">
-            {props.posts.length ? <span>New Writing By</span> : <span className="welcome">Welcome! Please visit <Link to="admin">Admin</Link> to add content.</span>}
+            {props.issues.length ? <span>New Writing By</span> : <span className="welcome">Welcome! Please visit <Link to="admin">Admin</Link> to add content.</span>}
             <ul id="contributors" className="nav-ul">
                 {posts}
             </ul>

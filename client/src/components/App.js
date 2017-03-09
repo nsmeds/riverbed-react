@@ -12,7 +12,7 @@ class App extends Component {
     this.state = {
       currentIssue: {
         _id: null,
-        title: 'No Current Issue',
+        title: '',
         posts: []
       },
       issues: [],
@@ -64,7 +64,7 @@ class App extends Component {
 
   render() {
 
-    let clonedChildren = React.cloneElement(this.props.children, this.state.currentIssue)
+    let clonedChildren = React.cloneElement(this.props.children, this.state)
 
     return ( 
       <div>
