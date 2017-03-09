@@ -16,7 +16,8 @@ class Admin extends Component {
             authors: [],
             issues: this.props.issues,
             hideNewauthor: true,
-            hideNewissue: true
+            hideNewissue: true,
+            currentIssue: this.props.currentIssue
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -69,6 +70,17 @@ class Admin extends Component {
         })
         .then(response => {
             // clear input fields
+            console.log(this.state.currentIssue._id, this.state.issue);
+            console.log('response.data', response.data);
+            if (this.state.currentIssue._id === this.state.issue) {
+                this.setState({
+                    currentIssue: {
+                        posts: this.state.currentIssue.posts.concat([response.data])
+                    }
+                });
+                console.log('currentIssue', this.state.currentIssue);
+            }
+
             this.setState({
                 title: '',
                 text: '',
@@ -124,7 +136,7 @@ class Admin extends Component {
         .then(response => {
             // If no authors in DB, render NewAuthor component by default.
             if (!response.data.length) {
-                ReactDOM.render(<NewAuthor {...this.props} />, document.getElementById('new-author'));
+                ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById('new-author'));
                 this.setState({
                     hideNewauthor: false
                 });
@@ -148,7 +160,7 @@ class Admin extends Component {
     getIssues = () => {
             // If no issues in DB, render NewIssue component by default.
             if (!this.state.issues.length) {
-                ReactDOM.render(<NewIssue {...this.props} />, document.getElementById('new-issue'));
+                ReactDOM.render(<NewIssue {...this.props} handleInputChange={this.handleInputChange} handleAddIssue={this.handleAddIssue} />, document.getElementById('new-issue'));
                 this.setState({
                     hideNewissue: false
                 });

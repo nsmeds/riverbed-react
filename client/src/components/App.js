@@ -18,6 +18,7 @@ class App extends Component {
       issues: [],
       loading: true
     };
+
   }
 
   componentDidMount() {
