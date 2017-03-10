@@ -9,19 +9,19 @@ class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            text: '',
-            author: '',
-            issue: '',
+            title: this.props.title,
+            text: this.props.text,
+            author: this.props.author,
+            issue: this.props.issue,
             authors: [],
             issues: this.props.issues,
             hideNewauthor: true,
             hideNewissue: true,
-            currentIssue: this.props.currentIssue
+            currentIssue: this.props.currentIssue,
+            handleInputChange: this.props.handleInputChange
         };
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmitPost = this.handleSubmitPost.bind(this);
+        this.handleInputChange = this.props.handleInputChange.bind(this);
         this.handleAddAuthor = this.handleAddAuthor.bind(this);
         this.handleAddIssue = this.handleAddIssue.bind(this);
         this.getAuthors = this.getAuthors.bind(this);
@@ -29,70 +29,15 @@ class Admin extends Component {
 
     }
 
-    // componentWillMount() {
-    //     console.log('this.props', this.props);
-    // }
+    componentWillMount() {
+        console.log('this.props', this.props);
+    }
 
     componentDidMount() {
         this.getAuthors();
         this.getIssues();
     }
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        const hidden = 'hideNew' + target.name;
-
-        if (value === 'new') {
-            this.setState({
-                [hidden]: false
-            })
-            if (name === 'author') {
-                    ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById(`new-${name}`));
-                } else {
-                    ReactDOM.render(<NewIssue {...this.props} handleInputChange={this.handleInputChange} handleAddIssue={this.handleAddIssue} />, document.getElementById(`new-${name}`))
-                }
-            } else {
-                this.setState({
-                    [name]: value
-                });
-            }
-    }
-
-    handleSubmitPost(event) {
-        event.preventDefault();
-        axios.post('http://localhost:3001/api/posts', {
-            title: this.state.title,
-            text: this.state.text,
-            author: this.state.author,
-            issue: this.state.issue
-        })
-        .then(response => {
-            // clear input fields
-            console.log(this.state.currentIssue._id, this.state.issue);
-            console.log('response.data', response.data);
-            if (this.state.currentIssue._id === this.state.issue) {
-                this.setState({
-                    currentIssue: {
-                        posts: this.state.currentIssue.posts.concat([response.data])
-                    }
-                });
-                console.log('currentIssue', this.state.currentIssue);
-            }
-
-            this.setState({
-                title: '',
-                text: '',
-                author: '',
-                issue: ''
-            });
-            console.log('Successful POST to /posts: ', response);
-        })
-        .catch(error => {
-            console.log('Could not POST to /posts: ', error)
-        })
-    }
     
     handleAddAuthor(event) {
         event.preventDefault();
@@ -136,7 +81,7 @@ class Admin extends Component {
         .then(response => {
             // If no authors in DB, render NewAuthor component by default.
             if (!response.data.length) {
-                ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById('new-author'));
+                ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.props.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById('new-author'));
                 this.setState({
                     hideNewauthor: false
                 });
@@ -145,11 +90,6 @@ class Admin extends Component {
                     authors: response.data,
                     author: response.data[0]._id
                 })
-                // .then(() => {
-                //     this.setState({
-                //         author: this.state.authors[0]._id
-                //     })
-                // });
             }
         })
         .catch(error => {
@@ -160,7 +100,7 @@ class Admin extends Component {
     getIssues = () => {
             // If no issues in DB, render NewIssue component by default.
             if (!this.state.issues.length) {
-                ReactDOM.render(<NewIssue {...this.props} handleInputChange={this.handleInputChange} handleAddIssue={this.handleAddIssue} />, document.getElementById('new-issue'));
+                ReactDOM.render(<NewIssue {...this.props} handleInputChange={this.props.handleInputChange} handleAddIssue={this.handleAddIssue} />, document.getElementById('new-issue'));
                 this.setState({
                     hideNewissue: false
                 });
@@ -171,36 +111,11 @@ class Admin extends Component {
             }
     }
 
-    // OLD GETISSUES FUNCTION THAT DUPLICATED SERVER CALL
-    // getIssues = () => {
-    //     axios.get(`http://localhost:3001/api/issues`)
-    //     .then(response => {
-    //         // If no issues in DB, render NewIssue component by default.
-    //         if (!response.data.length) {
-    //             ReactDOM.render(<NewIssue {...this.props} />, document.getElementById('new-issue'));
-    //             this.setState({
-    //                 hideNewissue: false
-    //             });
-    //         } else {
-    //             this.setState({
-    //                 issues: response.data,
-    //                 issue: response.data[0]._id
-    //             });
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.log('Error: could not GET issues. ', error);
-    //     })
-    // }
-
-
     render() {
         
         let authorList = this.state.authors.map(author => 
             <option key={author._id} value={author._id}>{author.name}</option>
         );
-
-        // console.log('this.state.issues', this.state.issues);
 
         let issueList = this.state.issues.map(issue => 
             <option key={issue._id} value={issue._id}>{issue.title}</option>
@@ -209,24 +124,24 @@ class Admin extends Component {
 
         return (
             <div className="menu-item">
-                <form className="form new-post-form" onSubmit={this.handleSubmitPost}>
+                <form className="form new-post-form" onSubmit={this.props.handleSubmitPost.bind(this)}>
                     <h5>New Post</h5>
-                    <label>Title: <input type="text" name="title" value={this.state.title} onChange={this.handleInputChange} /></label>
+                    <label>Title: <input type="text" name="title" value={this.state.title} onChange={this.props.handleInputChange.bind(this)} /></label>
                     <label>Author:         
-                        <select name="author" value={this.state.author} onChange={this.handleInputChange}>
+                        <select name="author" value={this.state.author} onChange={this.props.handleInputChange.bind(this)}>
                             {authorList}
                             <option value="new">Add New ... </option>
                         </select>
                     </label>
                     <div id="new-author" className={this.state.hideNewauthor ? 'hidden' : ''}></div>
                     <label>Issue: 
-                        <select name="issue" value={this.state.issue} onChange={this.handleInputChange}>
+                        <select name="issue" value={this.state.issue} onChange={this.props.handleInputChange.bind(this)}>
                             {issueList}
                             <option value="new">Add New ... </option>
                         </select>
                     </label>
                     <div id="new-issue" className={this.state.hideNewissue ? 'hidden' : ''}></div>
-                    <label>Content: <textarea name="text" value={this.state.text} onChange={this.handleInputChange}></textarea></label>
+                    <label>Content: <textarea name="text" value={this.state.text} onChange={this.props.handleInputChange.bind(this)}></textarea></label>
                     <button className="button">Submit</button>
                 </form>
             </div>

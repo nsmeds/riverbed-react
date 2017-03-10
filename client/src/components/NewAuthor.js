@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const NewAuthor = props => {
 
-    // console.log('props NewAuthor', props);
+    console.log('props NewAuthor', props);
 
     let newAuthor = {
         name: props.name,

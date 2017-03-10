@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import Admin from './Admin';
+import NewAuthor from './NewAuthor';
+import NewIssue from './NewIssue';
 
 class App extends Component {
 
@@ -15,32 +17,30 @@ class App extends Component {
         title: '',
         posts: []
       },
+      title: '',
+      author: '',
+      text: '',
+      issue: '',
       issues: [],
-      loading: true
+      loading: true,
+      handleSubmitPost: this.handleSubmitPost,
+      handleInputChange: this.handleInputChange
     };
-
+        
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmitPost = this.handleSubmitPost.bind(this);
   }
 
   componentDidMount() {
     this.getCurrentIssue();
     smoothScroll.init({selector: 'a[href^="#"]'});
   }
+  
 
   getCurrentIssue = () => {
     axios.get('http://localhost:3001/api/issues')
       .then(response => {
         let currRef = response.data[response.data.length - 1];
-        // if (!response.data.length) {
-        //   ReactDOM.render(<Admin />, document.getElementById('main'))
-        // } else {
-        //   axios.get(`http://localhost:3001/api/issues/${currRef._id}`)
-        //     .then(response => {
-        //       this.setState({
-        //         currentIssue: response.data,
-        //         loading: false
-        //       });
-        //     })
-        // }
         if (!response.data.length) {
           this.setState({
             loading: false
@@ -62,6 +62,65 @@ class App extends Component {
         console.log('Error: could not GET current issue. ', error);
       })
   }
+
+
+  handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        const hidden = 'hideNew' + target.name;
+
+        if (value === 'new') {
+            this.setState({
+                [hidden]: false
+            })
+            if (name === 'author') {
+                    ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById(`new-${name}`));
+                } else {
+                    ReactDOM.render(<NewIssue {...this.props} handleInputChange={this.handleInputChange} handleAddIssue={this.handleAddIssue} />, document.getElementById(`new-${name}`))
+                }
+            } else {
+                this.setState({
+                    [name]: value
+                });
+            }
+    }
+
+  handleSubmitPost(event) {
+        event.preventDefault();
+        axios.post('http://localhost:3001/api/posts', {
+            title: this.state.title,
+            text: this.state.text,
+            author: this.state.author,
+            issue: this.state.issue
+        })
+        .then(response => {
+            // console.log(this.state.currentIssue._id, this.state.issue);
+            // console.log('response.data', response.data);
+
+
+            if (this.state.currentIssue._id === this.state.issue) {
+                this.setState({
+                    currentIssue: {
+                        posts: this.state.currentIssue.posts.concat([response.data])
+                    }
+                });
+                // console.log('currentIssue', this.state.currentIssue);
+            }
+
+            // clear input fields
+            this.setState({
+                title: '',
+                text: '',
+                author: '',
+                issue: ''
+            });
+            console.log('Successful POST to /posts: ', response);
+        })
+        .catch(error => {
+            console.log('Could not POST to /posts: ', error)
+        })
+    }
 
   render() {
 
