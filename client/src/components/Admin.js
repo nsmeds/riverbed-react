@@ -13,6 +13,7 @@ class Admin extends Component {
             text: this.props.text,
             author: this.props.author,
             issue: this.props.issue,
+            keyl: this.props.keyl,
             authors: [],
             issues: this.props.issues,
             hideNewauthor: true,
@@ -81,7 +82,7 @@ class Admin extends Component {
         .then(response => {
             // If no authors in DB, render NewAuthor component by default.
             if (!response.data.length) {
-                ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.props.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById('new-author'));
+                ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById('new-author'));
                 this.setState({
                     hideNewauthor: false
                 });
@@ -100,7 +101,7 @@ class Admin extends Component {
     getIssues = () => {
             // If no issues in DB, render NewIssue component by default.
             if (!this.state.issues.length) {
-                ReactDOM.render(<NewIssue {...this.props} handleInputChange={this.props.handleInputChange} handleAddIssue={this.handleAddIssue} />, document.getElementById('new-issue'));
+                ReactDOM.render(<NewIssue {...this.props} handleInputChange={this.handleInputChange} handleAddIssue={this.handleAddIssue} />, document.getElementById('new-issue'));
                 this.setState({
                     hideNewissue: false
                 });

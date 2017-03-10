@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
-import Admin from './Admin';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
 
@@ -17,6 +16,7 @@ class App extends Component {
         title: '',
         posts: []
       },
+      keyl: 0,
       title: '',
       author: '',
       text: '',
@@ -24,7 +24,8 @@ class App extends Component {
       issues: [],
       loading: true,
       handleSubmitPost: this.handleSubmitPost,
-      handleInputChange: this.handleInputChange
+      handleInputChange: this.handleInputChange,
+      getCurrentIssue: this.getCurrentIssue
     };
         
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -69,6 +70,7 @@ class App extends Component {
         const value = target.value;
         const name = target.name;
         const hidden = 'hideNew' + target.name;
+        // console.log(value);
 
         if (value === 'new') {
             this.setState({
@@ -95,8 +97,8 @@ class App extends Component {
             issue: this.state.issue
         })
         .then(response => {
-            console.log(this.state.currentIssue._id, this.state.issue);
-            console.log('response.data', response.data);
+            // console.log(this.state.currentIssue._id, this.state.issue);
+            // console.log('response.data', response.data);
             // this.setState({
             //       currentIssue: {
             //           posts: this.state.currentIssue.posts.concat([response.data])
@@ -106,9 +108,11 @@ class App extends Component {
                 this.setState({
                     currentIssue: {
                         posts: this.state.currentIssue.posts.concat([response.data])
-                    }
+                    },
+                    keyl: Math.random()
                 });
                 console.log('currentIssue', this.state.currentIssue);
+                console.log('keyl', this.state.keyl);
             }
 
             // clear input fields
@@ -124,6 +128,8 @@ class App extends Component {
     }
 
   render() {
+
+    // console.log('currentIssue from App', this.state.currentIssue)
 
     let clonedChildren = React.cloneElement(this.props.children, this.state)
 
@@ -143,7 +149,7 @@ class App extends Component {
         </div>
         <div id="main">
           {
-            (this.state.loading) ? <p>Loading ... </p> : <div>{clonedChildren}</div>
+            (this.state.loading) ? <p>Loading ... </p> : <div>{this.props.children && clonedChildren}</div>
           }
         </div>
       </div>
