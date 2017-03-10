@@ -95,25 +95,26 @@ class App extends Component {
             issue: this.state.issue
         })
         .then(response => {
-            // console.log(this.state.currentIssue._id, this.state.issue);
-            // console.log('response.data', response.data);
-
-
+            console.log(this.state.currentIssue._id, this.state.issue);
+            console.log('response.data', response.data);
+            // this.setState({
+            //       currentIssue: {
+            //           posts: this.state.currentIssue.posts.concat([response.data])
+            //       }              
+            // });
             if (this.state.currentIssue._id === this.state.issue) {
                 this.setState({
                     currentIssue: {
                         posts: this.state.currentIssue.posts.concat([response.data])
                     }
                 });
-                // console.log('currentIssue', this.state.currentIssue);
+                console.log('currentIssue', this.state.currentIssue);
             }
 
             // clear input fields
             this.setState({
                 title: '',
-                text: '',
-                author: '',
-                issue: ''
+                text: ''
             });
             console.log('Successful POST to /posts: ', response);
         })
