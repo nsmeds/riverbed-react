@@ -112,6 +112,7 @@ class App extends Component {
                     keyl: Math.random()
                 });
                 console.log('currentIssue', this.state.currentIssue);
+                console.log('this', this);
                 console.log('keyl', this.state.keyl);
             }
 

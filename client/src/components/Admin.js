@@ -16,12 +16,13 @@ class Admin extends Component {
             keyl: this.props.keyl,
             authors: [],
             issues: this.props.issues,
+            handleSubmitPost: this.props.handleSubmitPost,
             hideNewauthor: true,
             hideNewissue: true,
             currentIssue: this.props.currentIssue,
             handleInputChange: this.props.handleInputChange
         };
-
+        this.handleSubmitPost = this.props.handleSubmitPost.bind(this);
         this.handleInputChange = this.props.handleInputChange.bind(this);
         this.handleAddAuthor = this.handleAddAuthor.bind(this);
         this.handleAddIssue = this.handleAddIssue.bind(this);
@@ -124,8 +125,9 @@ class Admin extends Component {
 
 
         return (
-            <div className="menu-item">
-                <form className="form new-post-form" onSubmit={this.props.handleSubmitPost.bind(this)}>
+            <div id="admin" className="menu-item">
+                <h2>ADMIN</h2>
+                <form className="form new-post-form" onSubmit={this.handleSubmitPost}>
                     <h5>New Post</h5>
                     <label>Title: <input type="text" name="title" value={this.state.title} onChange={this.props.handleInputChange.bind(this)} /></label>
                     <label>Author:         

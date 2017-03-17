@@ -10,9 +10,9 @@ const NewAuthor = props => {
     }
 
     return (
-        <div id="add-author" className="form sub-form">
-            <span>New Author</span>
-            <label>Name: 
+        <div id="add-author" className="sub-form">
+            <div>New Author</div>
+            <label>Name:  
                 <input type="text" name="name" value={newAuthor.name} onChange={props.handleInputChange} />
             </label>
             <label>Bio: 
