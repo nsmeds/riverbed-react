@@ -129,22 +129,22 @@ class Admin extends Component {
                 <h2>ADMIN</h2>
                 <form className="form new-post-form" onSubmit={this.handleSubmitPost}>
                     <h5>New Post</h5>
-                    <label>Title: <input type="text" name="title" value={this.state.title} onChange={this.props.handleInputChange.bind(this)} /></label>
-                    <label>Author:         
+                    <label><span>Title:</span><input type="text" name="title" value={this.state.title} onChange={this.props.handleInputChange.bind(this)} /></label>
+                    <label><span>Author:</span>         
                         <select name="author" value={this.state.author} onChange={this.props.handleInputChange.bind(this)}>
                             {authorList}
                             <option value="new">Add New ... </option>
                         </select>
                     </label>
                     <div id="new-author" className={this.state.hideNewauthor ? 'hidden' : ''}></div>
-                    <label>Issue: 
+                    <label><span>Issue:</span>
                         <select name="issue" value={this.state.issue} onChange={this.props.handleInputChange.bind(this)}>
                             {issueList}
                             <option value="new">Add New ... </option>
                         </select>
                     </label>
                     <div id="new-issue" className={this.state.hideNewissue ? 'hidden' : ''}></div>
-                    <label>Content: <textarea name="text" value={this.state.text} onChange={this.props.handleInputChange.bind(this)}></textarea></label>
+                    <label><span>Content:</span><textarea name="text" value={this.state.text} onChange={this.props.handleInputChange.bind(this)}></textarea></label>
                     <button className="button">Submit</button>
                 </form>
             </div>

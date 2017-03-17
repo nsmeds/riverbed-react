@@ -253,6 +253,17 @@ a:active {
   border-radius: 3px;*/
 }
 
+.form label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form label span {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .form h5 {
   font-weight: 400;
   font-size: 0.9em;
@@ -277,15 +288,16 @@ button {
 
 .new-post-form {
   align-items: flex-end;
-  padding-right: 25%;
-  padding-left: 25%;
+  padding-right: 26%;
+  padding-left: 26%;
 }
 
 .sub-form {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: 0.5em 1em;
+  font-size: 0.9em;
+  padding: 0.3em 0.5em;
   border: 1px solid #fff;
   border-radius: 3px;
 }
