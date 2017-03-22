@@ -16,6 +16,10 @@ class App extends Component {
         title: '',
         posts: []
       },
+      user: {
+        username: '',
+        password: ''
+      },
       keyl: 0,
       title: '',
       author: '',
@@ -25,11 +29,13 @@ class App extends Component {
       loading: true,
       handleSubmitPost: this.handleSubmitPost,
       handleInputChange: this.handleInputChange,
-      getCurrentIssue: this.getCurrentIssue
+      getCurrentIssue: this.getCurrentIssue,
+      handleLogin: this.handleLogin
     };
         
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmitPost = this.handleSubmitPost.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   componentDidMount() {
@@ -70,7 +76,10 @@ class App extends Component {
         const value = target.value;
         const name = target.name;
         const hidden = 'hideNew' + target.name;
-        // console.log(value);
+        console.log('value: ', value);
+        console.log('event: ', event);
+        console.log('name: ', name);
+        console.log('this.state.user', this.state.user);
 
         if (value === 'new') {
             this.setState({
@@ -128,6 +137,20 @@ class App extends Component {
         })
     }
 
+  handleLogin(event) {
+    event.preventDefault();
+    // console.log('user from handleLogin', user);
+    axios.post('http://localhost:3001/api/auth/signin', {
+      user: this.state.user
+    })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(error => {
+      console.log('Could not log in: ', error);
+    })
+  }
+
   render() {
 
     // console.log('currentIssue from App', this.state.currentIssue)
@@ -144,7 +167,7 @@ class App extends Component {
                   <li><Link to="/">Home</Link></li>
                   <li><Link to="/about">About</Link></li>
                   <li><Link to="/contact">Contact</Link></li>
-                  <li><Link to="/admin">Admin</Link></li>
+                  <li><Link to="/admin">Account</Link></li>
               </ul>
           </nav>
         </div>

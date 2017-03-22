@@ -32,7 +32,7 @@ class Admin extends Component {
     }
 
     componentWillMount() {
-        console.log('this.props', this.props);
+        console.log('this.props from Admin', this.props);
     }
 
     componentDidMount() {

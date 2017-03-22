@@ -8,6 +8,8 @@ import Home from './components/Home';
 import About from './components/About';
 import Admin from './components/Admin';
 import Contact from './components/Contact';
+import Signin from './components/Signin';
+import Unfound from './components/Unfound';
 
 // Anchor link functionality
 function hashLinkScroll() {
@@ -32,6 +34,8 @@ const routes = (
             <Route path="about" component={About} />
             <Route path="admin" component={Admin} />
             <Route path="contact" component={Contact} />
+            <Route path="signin" component={Signin} />
+            <Route path="*" component={Unfound} />
         </Route>
     </Router>
 );
