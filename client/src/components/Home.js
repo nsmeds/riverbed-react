@@ -11,8 +11,8 @@ const Home = props => {
 
   return (
     <div>
-      <Contributors {...props}/>
-      <MainContent {...props}/>
+      {/*<Contributors {...props}/>*/}
+      {/*<MainContent {...props}/>*/}
     </div>
   )
 }

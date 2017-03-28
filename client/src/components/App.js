@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
+import Home from './Home';
+import About from './About';
+import Admin from './Admin';
+import Contact from './Contact';
+import Signin from './Signin';
+import Unfound from './Unfound';
 
 class App extends Component {
 
@@ -155,28 +161,36 @@ class App extends Component {
 
     // console.log('currentIssue from App', this.state.currentIssue)
 
-    let clonedChildren = React.cloneElement(this.props.children, this.state)
+    // let clonedChildren = React.cloneElement(this.props.children, this.state)
 
     return ( 
-      <div>
-        <div id="header">
-          <Link to="/"><h1>Riverbed</h1></Link>
-          <h4>{this.state.currentIssue.title} | Vol. 1, No. 1</h4>
-          <nav className="nav">
+      <Router>
+        <div>
+          <div id="header">
+            <Link to="/"><h1>Riverbed</h1></Link>
+            <h4>{this.state.currentIssue.title} | Vol. 1, No. 1</h4>
+            <nav className="nav">
               <ul id="nav-menu-ul" className="nav-ul">
-                  <li><Link to="/">Home</Link></li>
-                  <li><Link to="/about">About</Link></li>
-                  <li><Link to="/contact">Contact</Link></li>
-                  <li><Link to="/admin">Account</Link></li>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/about">About</Link></li>
+                <li><Link to="/contact">Contact</Link></li>
+                <li><Link to="/admin">Account</Link></li>
               </ul>
-          </nav>
+            </nav>
+          </div>
+          <div id="main">
+            {
+              (this.state.loading) ? <p>Loading ... </p> : <div>{this.props.children}</div>
+            }
+          </div>
+        <Route path="/" component={Home} />
+        <Route path="about" component={About} />
+        <Route path="admin" component={Admin} />
+        <Route path="contact" component={Contact} />
+        <Route path="signin" component={Signin} />
+        <Route path="*" component={Unfound} />
         </div>
-        <div id="main">
-          {
-            (this.state.loading) ? <p>Loading ... </p> : <div>{this.props.children && clonedChildren}</div>
-          }
-        </div>
-      </div>
+      </Router>
     );
   }
 }

@@ -1,6 +1,6 @@
 // Libs
 import React from 'react';
-import { Router, Route, browserHistory } from 'react-router';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 // Components
 import App from './components/App';
@@ -28,7 +28,7 @@ function hashLinkScroll() {
 
 // Routes
 const routes = (
-    <Router history={browserHistory} onUpdate={hashLinkScroll}>
+    <Router onUpdate={hashLinkScroll}>
         <Route component={App}>
             <Route path="/" component={Home} />
             <Route path="about" component={About} />
