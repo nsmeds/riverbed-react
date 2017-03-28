@@ -8,8 +8,8 @@ import NewIssue from './NewIssue';
 
 class App extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       currentIssue: {
         _id: null,
@@ -20,19 +20,29 @@ class App extends Component {
         username: '',
         password: ''
       },
-      keyl: 0,
       title: '',
       author: '',
       text: '',
       issue: '',
+      authors: [],
       issues: [],
+      hideNewauthor: true,
+      hideNewissue: true,
       loading: true,
       handleSubmitPost: this.handleSubmitPost,
       handleInputChange: this.handleInputChange,
       getCurrentIssue: this.getCurrentIssue,
-      handleLogin: this.handleLogin
+      handleLogin: this.handleLogin,
+      handleAddAuthor: this.handleAddAuthor,
+      handleAddIssue: this.handleAddIssue,
+      getAuthors: this.getAuthors,
+      getIssues: this.getIssues
     };
         
+    this.getAuthors = this.getAuthors.bind(this);
+    this.getIssues = this.getIssues.bind(this);
+    this.handleAddAuthor = this.handleAddAuthor.bind(this);
+    this.handleAddIssue = this.handleAddIssue.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmitPost = this.handleSubmitPost.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -71,7 +81,7 @@ class App extends Component {
   }
 
 
-  handleInputChange(event) {
+  handleInputChange = event => {
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -79,7 +89,8 @@ class App extends Component {
         console.log('value: ', value);
         console.log('event: ', event);
         console.log('name: ', name);
-        console.log('this.state.user', this.state.user);
+        console.log('this', this);
+        // console.log('this.state.user', this.state.user);
 
         if (value === 'new') {
             this.setState({
@@ -97,7 +108,7 @@ class App extends Component {
             }
     }
 
-  handleSubmitPost(event) {
+  handleSubmitPost = event => {
         event.preventDefault();
         axios.post('http://localhost:3001/api/posts', {
             title: this.state.title,
@@ -117,12 +128,10 @@ class App extends Component {
                 this.setState({
                     currentIssue: {
                         posts: this.state.currentIssue.posts.concat([response.data])
-                    },
-                    keyl: Math.random()
+                    }
                 });
                 console.log('currentIssue', this.state.currentIssue);
                 console.log('this', this);
-                console.log('keyl', this.state.keyl);
             }
 
             // clear input fields
@@ -137,7 +146,7 @@ class App extends Component {
         })
     }
 
-  handleLogin(event) {
+  handleLogin = event => {
     event.preventDefault();
     // console.log('user from handleLogin', user);
     axios.post('http://localhost:3001/api/auth/signin', {
@@ -150,6 +159,78 @@ class App extends Component {
       console.log('Could not log in: ', error);
     })
   }
+
+    handleAddAuthor = event => {
+        event.preventDefault();
+        axios.post('http://localhost:3001/api/authors', {
+            name: this.state.name,
+            bio: this.state.bio
+        })
+        .then(response => {
+            this.setState({
+                authors: this.state.authors.concat([response.data]),
+                author: response.data._id,
+                hideNewauthor: true
+            });
+            console.log('Successful POST to /authors: ', response);
+        })
+        .catch(error => {
+            console.log('Could not POST to /authors: ', error)
+        })
+    }
+
+    handleAddIssue = event => {
+        event.preventDefault();
+        axios.post('http://localhost:3001/api/issues', {
+            title: this.state.issue,
+        })
+        .then(response => {
+            this.setState({
+                issues: this.state.issues.concat([response.data]),
+                issue: response.data._id,
+                hideNewissue: true
+            });
+            console.log('Successful POST to /issues: ', response);
+        })
+        .catch(error => {
+            console.log('Could not POST to /issues: ', error)
+        })
+    }
+
+    getAuthors = () => {
+        axios.get(`http://localhost:3001/api/authors`)
+        .then(response => {
+            // If no authors in DB, render NewAuthor component by default.
+            if (!response.data.length) {
+                ReactDOM.render(<NewAuthor {...this.props} handleInputChange={this.handleInputChange} handleAddAuthor={this.handleAddAuthor} />, document.getElementById('new-author'));
+                this.setState({
+                    hideNewauthor: false
+                });
+            } else {
+                this.setState({
+                    authors: response.data,
+                    author: response.data[0]._id
+                })
+            }
+        })
+        .catch(error => {
+            console.log('Error: could not GET authors. ', error);
+        })
+    }
+
+    getIssues = () => {
+            // If no issues in DB, render NewIssue component by default.
+            if (!this.state.issues.length) {
+                ReactDOM.render(<NewIssue {...this.props} handleInputChange={this.handleInputChange} handleAddIssue={this.handleAddIssue} />, document.getElementById('new-issue'));
+                this.setState({
+                    hideNewissue: false
+                });
+            } else {
+                this.setState({
+                    issue: this.state.issues[0]._id
+                });
+            }
+    }
 
   render() {
 
