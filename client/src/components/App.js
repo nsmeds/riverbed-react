@@ -12,34 +12,31 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentIssue: {
-        _id: null,
+        currentIssue: {
+            _id: null,
+            title: '',
+            posts: []
+        },
+        username: '',
+        password: '',
+        isLoggedIn: false,
         title: '',
-        posts: []
-      },
-    //   user: {
-    //     username: '',
-    //     password: ''
-    //   },
-    username: '',
-    password: '',
-      title: '',
-      author: '',
-      text: '',
-      issue: '',
-      authors: [],
-      issues: [],
-      hideNewauthor: true,
-      hideNewissue: true,
-      loading: true,
-      handleSubmitPost: this.handleSubmitPost,
-      handleInputChange: this.handleInputChange,
-      getCurrentIssue: this.getCurrentIssue,
-      handleLogin: this.handleLogin,
-      handleAddAuthor: this.handleAddAuthor,
-      handleAddIssue: this.handleAddIssue,
-      getAuthors: this.getAuthors,
-      getIssues: this.getIssues
+        author: '',
+        text: '',
+        issue: '',
+        authors: [],
+        issues: [],
+        hideNewauthor: true,
+        hideNewissue: true,
+        loading: true,
+        handleSubmitPost: this.handleSubmitPost,
+        handleInputChange: this.handleInputChange,
+        getCurrentIssue: this.getCurrentIssue,
+        handleLogin: this.handleLogin,
+        handleAddAuthor: this.handleAddAuthor,
+        handleAddIssue: this.handleAddIssue,
+        getAuthors: this.getAuthors,
+        getIssues: this.getIssues
     };
         
     this.getAuthors = this.getAuthors.bind(this);
@@ -115,21 +112,15 @@ class App extends Component {
             issue: this.state.issue
         })
         .then(response => {
-            // console.log(this.state.currentIssue._id, this.state.issue);
-            // console.log('response.data', response.data);
-            // this.setState({
-            //       currentIssue: {
-            //           posts: this.state.currentIssue.posts.concat([response.data])
-            //       }              
-            // });
             if (this.state.currentIssue._id === this.state.issue) {
                 this.setState({
                     currentIssue: {
-                        posts: this.state.currentIssue.posts.concat([response.data])
+                        posts: this.state.currentIssue.posts.concat([response.data]),
+                        title: response.data.issue.title
                     }
                 });
                 console.log('currentIssue', this.state.currentIssue);
-                console.log('this', this);
+                console.log('response.data', response.data);
             }
 
             // clear input fields
@@ -146,14 +137,15 @@ class App extends Component {
 
     handleLogin = event => {
         event.preventDefault();
-        console.log('user from handleLogin', this.state.user);
         axios.post('http://localhost:3001/api/auth/signin', {
             username: this.state.username,
             password: this.state.password
         })
         .then(res => {
-            // Auth.authenticateUser(res.data.token);
             Auth.authenticateUser(res.data.token);
+            this.setState({
+                isLoggedIn: true
+            });
             console.log(res);
         })
         .catch(error => {

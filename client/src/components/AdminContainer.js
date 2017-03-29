@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Auth from '../modules/Auth';
 import Signin from './Signin';
+import Admin from './Admin';
 
 class AdminContainer extends Component {
 
@@ -16,7 +18,9 @@ class AdminContainer extends Component {
 
     render() {
         return (
-            <Signin {...this.props}></Signin>
+            <div>
+                {(Auth.isAuthenticated) ? <Admin {...this.props}></Admin> : <Signin {...this.props}></Signin> }
+            </div>
         );
     }
 }

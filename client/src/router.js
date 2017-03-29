@@ -6,7 +6,6 @@ import { Router, Route, browserHistory } from 'react-router';
 import App from './components/App';
 import Home from './components/Home';
 import About from './components/About';
-// import Admin from './components/Admin';
 import Contact from './components/Contact';
 import AdminContainer from './components/AdminContainer';
 import Unfound from './components/Unfound';
