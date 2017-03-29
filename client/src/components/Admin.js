@@ -8,7 +8,7 @@ const Admin = props => {
 
     // constructor(props) {
     //     super(props);
-    //     props = {
+    //     this.state = {
     //         title: props.title,
     //         text: props.text,
     //         author: props.author,

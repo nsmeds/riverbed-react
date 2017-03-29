@@ -5,6 +5,7 @@ import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
+import Auth from '../modules/Auth';
 
 class App extends Component {
 
@@ -16,10 +17,12 @@ class App extends Component {
         title: '',
         posts: []
       },
-      user: {
-        username: '',
-        password: ''
-      },
+    //   user: {
+    //     username: '',
+    //     password: ''
+    //   },
+    username: '',
+    password: '',
       title: '',
       author: '',
       text: '',
@@ -86,11 +89,6 @@ class App extends Component {
         const value = target.value;
         const name = target.name;
         const hidden = 'hideNew' + target.name;
-        console.log('value: ', value);
-        console.log('event: ', event);
-        console.log('name: ', name);
-        console.log('this', this);
-        // console.log('this.state.user', this.state.user);
 
         if (value === 'new') {
             this.setState({
@@ -146,19 +144,22 @@ class App extends Component {
         })
     }
 
-  handleLogin = event => {
-    event.preventDefault();
-    // console.log('user from handleLogin', user);
-    axios.post('http://localhost:3001/api/auth/signin', {
-      user: this.state.user
-    })
-    .then(res => {
-      console.log(res);
-    })
-    .catch(error => {
-      console.log('Could not log in: ', error);
-    })
-  }
+    handleLogin = event => {
+        event.preventDefault();
+        console.log('user from handleLogin', this.state.user);
+        axios.post('http://localhost:3001/api/auth/signin', {
+            username: this.state.username,
+            password: this.state.password
+        })
+        .then(res => {
+            // Auth.authenticateUser(res.data.token);
+            Auth.authenticateUser(res.data.token);
+            console.log(res);
+        })
+        .catch(error => {
+            console.log('Could not log in: ', error);
+        })
+    }
 
     handleAddAuthor = event => {
         event.preventDefault();

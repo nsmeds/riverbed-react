@@ -1,3 +1,5 @@
+import React from 'react';
+
 class Auth {
     static authenticateUser(token) {
         localStorage.setItem('token', token);
