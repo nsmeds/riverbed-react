@@ -6,8 +6,9 @@ import { Router, Route, browserHistory } from 'react-router';
 import App from './components/App';
 import Home from './components/Home';
 import About from './components/About';
-import Admin from './components/Admin';
 import Contact from './components/Contact';
+import AdminContainer from './components/AdminContainer';
+import Unfound from './components/Unfound';
 
 // Anchor link functionality
 function hashLinkScroll() {
@@ -30,8 +31,9 @@ const routes = (
         <Route component={App}>
             <Route path="/" component={Home} />
             <Route path="about" component={About} />
-            <Route path="admin" component={Admin} />
+            <Route path="admin" component={AdminContainer} />
             <Route path="contact" component={Contact} />
+            <Route path="*" component={Unfound} />
         </Route>
     </Router>
 );
