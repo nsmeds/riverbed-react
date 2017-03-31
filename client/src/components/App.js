@@ -57,22 +57,27 @@ class App extends Component {
   getCurrentIssue = () => {
     axios.get('http://localhost:3001/api/issues')
       .then(response => {
-        let currRef = response.data[response.data.length - 1];
+        // let currRef = response.data[response.data.length - 1];
         if (!response.data.length) {
           this.setState({
             loading: false
           });
         } else {
+          let curr = response.data.find(issue => issue.isCurrentIssue === true);
+          console.log('curr', curr);
           this.setState({
-            issues: response.data
-          })
-          axios.get(`http://localhost:3001/api/issues/${currRef._id}`)
-            .then(response => {
-              this.setState({
-                currentIssue: response.data,
-                loading: false
-              });
-            })
+            issues: response.data,
+            currentIssue: curr,
+            loading: false
+          });
+
+        //   axios.get(`http://localhost:3001/api/issues/${currRef._id}`)
+        //     .then(response => {
+        //       this.setState({
+        //         currentIssue: response.data,
+        //         loading: false
+        //       });
+        //     })
         }
       })
       .catch(error => {
