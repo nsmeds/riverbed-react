@@ -141,6 +141,7 @@ class App extends Component {
             headers: {'Authorization': token}
         };
         axios.get('http://localhost:3001/api/auth/verify', config)
+            .then(this.setState({isLoggedIn: true}))
             .catch(() => this.logout());
     }
 
