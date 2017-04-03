@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Auth from '../modules/Auth';
 import Signin from './Signin';
 import Admin from './Admin';
 
 class AdminContainer extends Component {
 
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     componentDidMount() {
+        this.props.checkToken();
         this.props.getAuthors();
         this.props.getIssues();
     }
@@ -19,7 +19,7 @@ class AdminContainer extends Component {
     render() {
         return (
             <div>
-                {(Auth.isAuthenticated) ? <Admin {...this.props}></Admin> : <Signin {...this.props}></Signin> }
+                {this.props.isLoggedIn ? <Admin {...this.props}></Admin> : <Signin {...this.props}></Signin> }
             </div>
         );
     }

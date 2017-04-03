@@ -33,6 +33,8 @@ class App extends Component {
         handleInputChange: this.handleInputChange,
         getCurrentIssue: this.getCurrentIssue,
         handleLogin: this.handleLogin,
+        checkToken: this.checkToken,
+        logout: this.logout,
         handleAddAuthor: this.handleAddAuthor,
         handleAddIssue: this.handleAddIssue,
         getAuthors: this.getAuthors,
@@ -46,10 +48,13 @@ class App extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmitPost = this.handleSubmitPost.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.checkToken = this.checkToken.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
     this.getCurrentIssue();
+    this.checkToken();
     smoothScroll.init({selector: 'a[href^="#"]'});
   }
   
@@ -57,27 +62,18 @@ class App extends Component {
   getCurrentIssue = () => {
     axios.get('http://localhost:3001/api/issues')
       .then(response => {
-        // let currRef = response.data[response.data.length - 1];
         if (!response.data.length) {
           this.setState({
             loading: false
           });
         } else {
           let curr = response.data.find(issue => issue.isCurrentIssue === true);
-          console.log('curr', curr);
+        //   console.log('curr', curr);
           this.setState({
             issues: response.data,
             currentIssue: curr,
             loading: false
           });
-
-        //   axios.get(`http://localhost:3001/api/issues/${currRef._id}`)
-        //     .then(response => {
-        //       this.setState({
-        //         currentIssue: response.data,
-        //         loading: false
-        //       });
-        //     })
         }
       })
       .catch(error => {
@@ -124,8 +120,6 @@ class App extends Component {
                         title: response.data.issue.title
                     }
                 });
-                console.log('currentIssue', this.state.currentIssue);
-                console.log('response.data', response.data);
             }
 
             // clear input fields
@@ -140,6 +134,23 @@ class App extends Component {
         })
     }
 
+    checkToken = () => {
+        let token = localStorage.getItem('token');
+        if (!token) return this.logout();
+        let config = {
+            headers: {'Authorization': token}
+        };
+        axios.get('http://localhost:3001/api/auth/verify', config)
+            .catch(() => this.logout());
+    }
+
+    logout = () => {
+        this.setState({
+            isLoggedIn: false
+        });
+        Auth.deauthenticate();
+    }
+
     handleLogin = event => {
         event.preventDefault();
         axios.post('http://localhost:3001/api/auth/signin', {
@@ -151,7 +162,7 @@ class App extends Component {
             this.setState({
                 isLoggedIn: true
             });
-            console.log(res);
+            console.log('res', res);
         })
         .catch(error => {
             console.log('Could not log in: ', error);
