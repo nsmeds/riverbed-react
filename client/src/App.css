@@ -250,11 +250,8 @@ a:active {
   flex-direction: column;
   font-weight: 300;
   font-size: 0.9em;
-  /*margin: 2em auto;*/
-  /*max-width: 20em;*/
-  /*padding: 1em;*/
-  /*border: 1px solid white;
-  border-radius: 3px;*/
+  max-width: 25em;
+  margin: 2em auto;
 }
 
 .form label {
@@ -290,10 +287,17 @@ button {
   width: 20em;
 }
 
-.new-post-form {
+.new-post-form,
+.signin-form {
   align-items: flex-end;
-  padding-right: 26%;
-  padding-left: 26%;
+}
+
+.new-post-form span {
+  margin-right: 1em;
+}
+
+.signin-form input {
+  width: 17em;
 }
 
 .sub-form {
