@@ -1,8 +1,4 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
-import NewAuthor from './NewAuthor';
-import NewIssue from './NewIssue';
+import React from 'react';
 
 const Admin = props => {
         
