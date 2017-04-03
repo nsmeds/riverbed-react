@@ -239,6 +239,10 @@ a:active {
   text-align: left;
 }
 
+.wrap {
+  min-height: 100%;
+}
+
 /**** Form Styles ****/
 
 .form {

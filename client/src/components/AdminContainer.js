@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Auth from '../modules/Auth';
 import Signin from './Signin';
 import Admin from './Admin';
 
