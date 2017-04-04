@@ -38,9 +38,11 @@ class App extends Component {
         handleAddAuthor: this.handleAddAuthor,
         handleAddIssue: this.handleAddIssue,
         getAuthors: this.getAuthors,
-        getIssues: this.getIssues
+        getIssues: this.getIssues,
+        updateCurrentIssue: this.updateCurrentIssue,
     };
         
+    this.updateCurrentIssue = this.updateCurrentIssue.bind(this);
     this.getAuthors = this.getAuthors.bind(this);
     this.getIssues = this.getIssues.bind(this);
     this.handleAddAuthor = this.handleAddAuthor.bind(this);
@@ -102,6 +104,38 @@ class App extends Component {
                     [name]: value
                 });
             }
+    }
+
+    updateCurrentIssue = event => {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        console.log('name', name);
+        console.log('value', value);
+        let curr = this.state.issues.find(issue => issue.isCurrentIssue === true);
+        let newCurr = this.state.issues.find(issue => issue._id === value);
+        axios.put(`http://localhost:3001/api/issues/${curr._id}`, {
+            isCurrentIssue: false
+        })
+        .then(response => {
+            this.setState({
+                [curr]: {
+                    isCurrentIssue: false
+                },
+                [name]: value,
+                currentIssue: newCurr
+            });
+            axios.put(`http://localhost:3001/api/issues/${newCurr._id}`, {
+                isCurrentIssue: true
+            })
+                .then(response => {
+                    this.setState({
+                        currentIssue: newCurr
+                    })
+                })
+                .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
     }
 
   handleSubmitPost = event => {

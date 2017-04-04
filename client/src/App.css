@@ -314,6 +314,11 @@ button {
   width: 15em;
 }
 
+.select-span {
+  font-weight: 300;
+  font-size: 0.9em;
+}
+
 #admin button {
   align-self: flex-end;
   }

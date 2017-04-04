@@ -1,6 +1,8 @@
 import React from 'react';
 
 const Admin = props => {
+
+    console.log('props from Admin', props);
         
     let authorList = props.authors.map(author => 
         <option key={author._id} value={author._id}>{author.name}</option>
@@ -35,6 +37,10 @@ const Admin = props => {
                     <label><span>Content:</span><textarea name="text" value={props.text} onChange={props.handleInputChange}></textarea></label>
                     <button className="button">Submit</button>
                 </form>
+                <span className="select-span">Current issue: </span>
+                <select name="currentIssue" value={props.currentIssue._id} onChange={props.updateCurrentIssue}>
+                    {issueList}
+                </select>
             </div>
             <button onClick={props.logout} id="logout" className="button">Log Out</button>
         </div>
