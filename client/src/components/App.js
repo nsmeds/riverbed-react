@@ -110,36 +110,32 @@ class App extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
+        console.log('name', name);
         console.log('value', value);
-
-
         let curr = this.state.issues.find(issue => issue.isCurrentIssue === true);
         let newCurr = this.state.issues.find(issue => issue._id === value);
-        console.log('newCurr', newCurr);
-        console.log('curr', curr);
-        console.log('issues', this.state.issues);
         axios.put(`http://localhost:3001/api/issues/${curr._id}`, {
             isCurrentIssue: false
         })
-            .then(response => {
-                this.setState({
-                    [curr]: {
-                        isCurrentIssue: false
-                    },
-                    currentIssue: newCurr
-                });
-                axios.put(`http://localhost:3001/api/issues/${newCurr._id}`, {
-                    isCurrentIssue: true
-                })
-                    .then(response => {
-                        this.setState({
-                            currentIssue: newCurr
-                        })
-                    })
-                    .catch(error => console.log(error));
+        .then(response => {
+            this.setState({
+                [curr]: {
+                    isCurrentIssue: false
+                },
+                [name]: value,
+                currentIssue: newCurr
+            });
+            axios.put(`http://localhost:3001/api/issues/${newCurr._id}`, {
+                isCurrentIssue: true
             })
-            .catch(error => console.log(error));
-        console.log('currentIssue', this.state.currentIssue);
+                .then(response => {
+                    this.setState({
+                        currentIssue: newCurr
+                    })
+                })
+                .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
     }
 
   handleSubmitPost = event => {

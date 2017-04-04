@@ -37,7 +37,8 @@ const Admin = props => {
                     <label><span>Content:</span><textarea name="text" value={props.text} onChange={props.handleInputChange}></textarea></label>
                     <button className="button">Submit</button>
                 </form>
-                <select name="issue" value={props.issue} onChange={props.updateCurrentIssue}>
+                <span className="select-span">Current issue: </span>
+                <select name="currentIssue" value={props.currentIssue._id} onChange={props.updateCurrentIssue}>
                     {issueList}
                 </select>
             </div>
