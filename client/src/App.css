@@ -338,6 +338,20 @@ button {
   box-shadow: inset 1 5px 5px -5px hsla(190,10%,10%,1);
 }
 
+/**** PostEditor Styles ****/
+
+#content {
+  /*height: 8em;
+  width: 20em;*/
+}
+
+.editor {
+  height: 8em;
+  width: 20em;
+ border: 1px solid grey;
+ padding: 6px;
+}
+
 /**** Footer Styles ****/
 
 #sub-footer {
