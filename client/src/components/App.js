@@ -5,6 +5,8 @@ import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
+import PostEditor from './PostEditor';
+import { Editor, EditorState, convertToRaw } from 'draft-js';
 import Auth from '../modules/Auth';
 
 class App extends Component {
@@ -40,7 +42,10 @@ class App extends Component {
         getAuthors: this.getAuthors,
         getIssues: this.getIssues,
         updateCurrentIssue: this.updateCurrentIssue,
+        editorState: EditorState.createEmpty(),
+        onChange: this.onChange
     };
+
         
     this.updateCurrentIssue = this.updateCurrentIssue.bind(this);
     this.getAuthors = this.getAuthors.bind(this);
@@ -52,14 +57,18 @@ class App extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.checkToken = this.checkToken.bind(this);
     this.logout = this.logout.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount() {
-    this.getCurrentIssue();
-    this.checkToken();
-    smoothScroll.init({selector: 'a[href^="#"]'});
-  }
+    componentDidMount() {
+        this.getCurrentIssue();
+        this.checkToken();
+        smoothScroll.init({selector: 'a[href^="#"]'});
+    }
   
+    onChange = (editorState) => {
+        this.setState({editorState});
+    }
 
   getCurrentIssue = () => {
     axios.get('http://localhost:3001/api/issues')
@@ -140,9 +149,12 @@ class App extends Component {
 
   handleSubmitPost = event => {
         event.preventDefault();
+        let rawdata = convertToRaw(this.state.editorState.getCurrentContent());
+        console.log(this.rawdata);
         axios.post('http://localhost:3001/api/posts', {
             title: this.state.title,
-            text: this.state.text,
+            // text: this.state.text,
+            text: rawdata,
             author: this.state.author,
             issue: this.state.issue
         })

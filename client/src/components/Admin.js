@@ -3,7 +3,7 @@ import PostEditor from './PostEditor';
 
 const Admin = props => {
 
-    // console.log('props from Admin', props);
+    console.log('props from Admin', props);
         
     let authorList = props.authors.map(author => 
         <option key={author._id} value={author._id}>{author.name}</option>
@@ -35,8 +35,8 @@ const Admin = props => {
                         </select>
                     </label>
                     <div id="new-issue" className={props.hideNewissue ? 'hidden' : ''}></div>
-                    <label><span>Content:</span><textarea name="text" value={props.text} onChange={props.handleInputChange}></textarea></label>
-                    <PostEditor {...props}/>
+                    {/*<label><span>Content:</span><textarea name="text" value={props.text} onChange={props.handleInputChange}></textarea></label>*/}
+                    <PostEditor {...props} editorState={props.editorState} onChange={props.onChange} />
                     <button className="button">Submit</button>
                 </form>
                 <span className="select-span">Current issue: </span>
