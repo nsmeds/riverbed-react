@@ -3,7 +3,7 @@ import PostEditor from './PostEditor';
 
 const Admin = props => {
 
-    console.log('props from Admin', props);
+    // console.log('props from Admin', props);
         
     let authorList = props.authors.map(author => 
         <option key={author._id} value={author._id}>{author.name}</option>

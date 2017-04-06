@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Editor, EditorState, convertToRaw } from 'draft-js';
+// import ReactDOM from 'react-dom';
+// import { Editor, EditorState, convertToRaw } from 'draft-js';
 
 class PostEditor extends Component {
 
@@ -20,7 +20,7 @@ class PostEditor extends Component {
 
     render() {
         
-        console.log('props from PostEditor', this.props);
+        // console.log('props from PostEditor', this.props);
         const { editorState, onChange } = this.props;
 
         return (

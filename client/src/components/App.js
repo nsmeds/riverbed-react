@@ -5,7 +5,7 @@ import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
-import PostEditor from './PostEditor';
+// import PostEditor from './PostEditor';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
 import Auth from '../modules/Auth';
 
@@ -73,6 +73,7 @@ class App extends Component {
   getCurrentIssue = () => {
     axios.get('http://localhost:3001/api/issues')
       .then(response => {
+          console.log(response);
         if (!response.data.length) {
           this.setState({
             loading: false
@@ -119,8 +120,6 @@ class App extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        console.log('name', name);
-        console.log('value', value);
         let curr = this.state.issues.find(issue => issue.isCurrentIssue === true);
         let newCurr = this.state.issues.find(issue => issue._id === value);
         axios.put(`http://localhost:3001/api/issues/${curr._id}`, {
@@ -237,10 +236,16 @@ class App extends Component {
 
     handleAddIssue = event => {
         event.preventDefault();
+        let isCurrent = false;
+        if (!this.state.issues.length) {
+            isCurrent = true
+            }
         axios.post('http://localhost:3001/api/issues', {
             title: this.state.issue,
+            isCurrentIssue: isCurrent
         })
         .then(response => {
+            console.log(response);
             this.setState({
                 issues: this.state.issues.concat([response.data]),
                 issue: response.data._id,
