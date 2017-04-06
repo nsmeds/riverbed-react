@@ -5,8 +5,7 @@ import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
-// import PostEditor from './PostEditor';
-import { Editor, EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import Auth from '../modules/Auth';
 
 class App extends Component {
@@ -148,7 +147,7 @@ class App extends Component {
 
   handleSubmitPost = event => {
         event.preventDefault();
-        let rawdata = convertToRaw(this.state.editorState.getCurrentContent());
+        let rawdata = JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()));
         console.log(this.rawdata);
         axios.post('http://localhost:3001/api/posts', {
             title: this.state.title,

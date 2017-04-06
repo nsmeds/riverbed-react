@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
-// import { Editor, EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'draft-js';
 
 class PostEditor extends Component {
-
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         editorState: EditorState.createEmpty()
-    //     };
-    //     this.rawdata;
-    //     this.onChange = this.onChange.bind(this);
-    // }
-    
-    // onChange (editorState) {
-    //     this.setState({editorState});
-    //     this.rawdata = convertToRaw(this.state.editorState.getCurrentContent());
-    // } 
 
     render() {
         
