@@ -135,31 +135,29 @@ class App extends Component {
         const value = target.value;
         const name = target.name;
         let curr = this.state.issues.find(issue => issue.isCurrentIssue === true);
-        // console.log('curr - should only ever be one', curr);
         axios.put(`http://localhost:3001/api/issues/${curr._id}`, {
             isCurrentIssue: false
         })
         .then(response => {
-            // console.log('response.data', response.data);
+            let currIndex = this.state.issues.findIndex(issue => issue._id === response.data._id);
+            let issues = this.state.issues;
+            issues[currIndex].isCurrentIssue = false;
             this.setState({
-                // [curr]: response.data,
                 [name]: value,
-                currentIssue: response.data
+                currentIssue: response.data,
+                issues
             });
-            // console.log('curr', curr);
-            // console.log('value', value);
-            // console.log('this.state.issues', this.state.issues);
             const newCurr = this.state.issues.filter(issue => issue._id === value)[0];
-            // console.log('newCurr', newCurr);
             axios.put(`http://localhost:3001/api/issues/${newCurr._id}`, {
                 isCurrentIssue: true
             })
                 .then(response => {
+                    const newCurrIndex = this.state.issues.findIndex(issue => issue._id === response.data._id);
+                    let issues = this.state.issues;
+                    issues[newCurrIndex].isCurrentIssue = true;
                     this.setState({
                         currentIssue: response.data,
-                        // [newCurr]: {
-                        //     isCurrentIssue: true
-                        // }
+                        issues
                     });
                     this.processPosts(this.state.currentIssue);
                 })
