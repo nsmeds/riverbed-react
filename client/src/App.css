@@ -14,7 +14,7 @@ body {
   scroll-behavior: smooth;
 }
 
-header {
+#header {
   display: inline-block;
   border-bottom: 2px solid #000;
 }
@@ -78,7 +78,6 @@ a:active {
 #nav-menu-ul {
   font-weight: 300;
   font-size: 0.8em;
-  margin-top: 0.5em;
 }
 
 #nav-menu-ul li {
@@ -243,6 +242,11 @@ a:active {
   min-height: 100%;
 }
 
+.blockquote {
+  font-size: 0.9em;
+  font-style: italic;
+}
+
 /**** Form Styles ****/
 
 .form {
@@ -348,8 +352,8 @@ button {
 .editor {
   height: 8em;
   width: 20em;
- border: 1px solid grey;
- padding: 6px;
+  border: 1px solid grey;
+  padding: 6px;
 }
 
 /**** Footer Styles ****/

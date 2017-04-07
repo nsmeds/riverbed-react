@@ -84,12 +84,26 @@ class App extends Component {
                 });
             } else {
                 let curr = response.data.find(issue => issue.isCurrentIssue === true);
-                this.processPosts(curr);
-                this.setState({
-                    issues: response.data,
-                    currentIssue: curr,
-                    loading: false
-                });
+                if (!curr) {                    
+                    this.processPosts(response.data[0]);
+                    this.setState({
+                        currentIssue: response.data[0],
+                        loading: false,
+                        issues: response.data
+                    });
+                    let issues = this.state.issues;
+                    issues[0].isCurrentIssue = true;
+                    this.setState({
+                        issues
+                    });
+                } else {
+                    this.setState({
+                        issues: response.data,
+                        currentIssue: curr,
+                        loading: false
+                    });
+                    this.processPosts(curr);
+                }
             }
         })
         .catch(error => {
@@ -126,6 +140,7 @@ class App extends Component {
     }
 
     processPosts = currentIssue => {
+        if (!currentIssue) return;
         let results = currentIssue.posts;
         results.map(post => {
             return this.convertToEditor(post);
@@ -367,15 +382,15 @@ class App extends Component {
         <div id="header">
           <Link to="/"><h1>Riverbed</h1></Link>
           <h4>{this.state.currentIssue.title} | Vol. 1, No. {issueIndex}</h4>
-          <nav className="nav">
-              <ul id="nav-menu-ul" className="nav-ul">
-                  <li><Link to="/">Home</Link></li>
-                  <li><Link to="/about">About</Link></li>
-                  <li><Link to="/contact">Contact</Link></li>
-                  <li><Link to="/admin">Account</Link></li>
-              </ul>
-          </nav>
         </div>
+        <nav className="nav">
+            <ul id="nav-menu-ul" className="nav-ul">
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/about">About</Link></li>
+                <li><Link to="/issues">Issues</Link></li>
+                <li><Link to="/admin">Account</Link></li>
+            </ul>
+        </nav>
         <div id="main">
           {
             (this.state.loading) ? <p>Loading ... </p> : <div>{this.props.children && clonedChildren}</div>

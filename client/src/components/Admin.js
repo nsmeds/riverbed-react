@@ -13,7 +13,6 @@ const Admin = props => {
         <option key={issue._id} value={issue._id}>{issue.title}</option>
     );
 
-
     return (
         <div id="admin" className="menu-item">
             <div className="wrap">
@@ -35,7 +34,6 @@ const Admin = props => {
                         </select>
                     </label>
                     <div id="new-issue" className={props.hideNewissue ? 'hidden' : ''}></div>
-                    {/*<label><span>Content:</span><textarea name="text" value={props.text} onChange={props.handleInputChange}></textarea></label>*/}
                     <PostEditor {...props} editorState={props.editorState} onChange={props.onChange} />
                     <button className="button">Submit</button>
                 </form>
