@@ -46,6 +46,7 @@ class App extends Component {
         updateCurrentIssue: this.updateCurrentIssue,
         onChange: this.onChange,
         handleKeyCommand: this.handleKeyCommand,
+        focus: this.focus,
         // _onBoldClick: this._onBoldClick
     };
 
@@ -62,6 +63,7 @@ class App extends Component {
     this.logout = this.logout.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    // this.focus = this.focus.bind(this);
     // this._onBoldClick = this._onBoldClick.bind(this);
   }
 
@@ -74,6 +76,8 @@ class App extends Component {
     onChange = (editorState) => {
         this.setState({editorState});
     }
+
+    // focus = () => this.refs.editor.focus();
 
     getCurrentIssue = () => {
         axios.get('http://localhost:3001/api/issues')
