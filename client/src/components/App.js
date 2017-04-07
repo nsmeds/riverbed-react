@@ -79,7 +79,6 @@ class App extends Component {
             } else {
                 let curr = response.data.find(issue => issue.isCurrentIssue === true);
                 this.processPosts(curr);
-                // console.log('curr', curr);
                 this.setState({
                     issues: response.data,
                     currentIssue: curr,
@@ -94,12 +93,9 @@ class App extends Component {
 
   processPosts = currentIssue => {
         let results = currentIssue.posts;
-        // console.log('results', results);
         results.map(post => {
             let rawdata = JSON.parse(post.text);
-            // console.log('rawdata', rawdata);
             let contentState = convertFromRaw(rawdata);
-            // console.log('processed', processed);
             let editorState = EditorState.createWithContent(contentState);
             post.text = editorState;
             return post;
@@ -134,12 +130,11 @@ class App extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        let curr = this.state.issues.find(issue => issue.isCurrentIssue === true);
-        axios.put(`http://localhost:3001/api/issues/${curr._id}`, {
+        const currIndex = this.state.issues.findIndex(issue => issue.isCurrentIssue === true);
+        axios.put(`http://localhost:3001/api/issues/${this.state.issues[currIndex]._id}`, {
             isCurrentIssue: false
         })
         .then(response => {
-            let currIndex = this.state.issues.findIndex(issue => issue._id === response.data._id);
             let issues = this.state.issues;
             issues[currIndex].isCurrentIssue = false;
             this.setState({
@@ -147,12 +142,11 @@ class App extends Component {
                 currentIssue: response.data,
                 issues
             });
-            const newCurr = this.state.issues.filter(issue => issue._id === value)[0];
-            axios.put(`http://localhost:3001/api/issues/${newCurr._id}`, {
+            const newCurrIndex = this.state.issues.findIndex(issue => issue._id === value);
+            axios.put(`http://localhost:3001/api/issues/${this.state.issues[newCurrIndex]._id}`, {
                 isCurrentIssue: true
             })
                 .then(response => {
-                    const newCurrIndex = this.state.issues.findIndex(issue => issue._id === response.data._id);
                     let issues = this.state.issues;
                     issues[newCurrIndex].isCurrentIssue = true;
                     this.setState({
@@ -169,10 +163,8 @@ class App extends Component {
   handleSubmitPost = event => {
         event.preventDefault();
         let rawdata = JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()));
-        // console.log(this.rawdata);
         axios.post('http://localhost:3001/api/posts', {
             title: this.state.title,
-            // text: this.state.text,
             text: rawdata,
             author: this.state.author,
             issue: this.state.issue
