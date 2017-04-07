@@ -5,6 +5,7 @@ import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
+import { Draft, Editor, EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import Auth from '../modules/Auth';
 
 class App extends Component {
@@ -40,7 +41,10 @@ class App extends Component {
         getAuthors: this.getAuthors,
         getIssues: this.getIssues,
         updateCurrentIssue: this.updateCurrentIssue,
+        editorState: EditorState.createEmpty(),
+        onChange: this.onChange
     };
+
         
     this.updateCurrentIssue = this.updateCurrentIssue.bind(this);
     this.getAuthors = this.getAuthors.bind(this);
@@ -52,35 +56,54 @@ class App extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.checkToken = this.checkToken.bind(this);
     this.logout = this.logout.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount() {
-    this.getCurrentIssue();
-    this.checkToken();
-    smoothScroll.init({selector: 'a[href^="#"]'});
-  }
+    componentDidMount() {
+        this.getCurrentIssue();
+        this.checkToken();
+        smoothScroll.init({selector: 'a[href^="#"]'});
+    }
   
+    onChange = (editorState) => {
+        this.setState({editorState});
+    }
 
-  getCurrentIssue = () => {
-    axios.get('http://localhost:3001/api/issues')
-      .then(response => {
-        if (!response.data.length) {
-          this.setState({
-            loading: false
-          });
-        } else {
-          let curr = response.data.find(issue => issue.isCurrentIssue === true);
-        //   console.log('curr', curr);
-          this.setState({
-            issues: response.data,
-            currentIssue: curr,
-            loading: false
-          });
-        }
-      })
-      .catch(error => {
-        console.log('Error: could not GET current issue. ', error);
-      })
+    getCurrentIssue = () => {
+        axios.get('http://localhost:3001/api/issues')
+        .then(response => {
+            if (!response.data.length) {
+                this.setState({
+                    loading: false
+                });
+            } else {
+                let curr = response.data.find(issue => issue.isCurrentIssue === true);
+                this.processPosts(curr);
+                // console.log('curr', curr);
+                this.setState({
+                    issues: response.data,
+                    currentIssue: curr,
+                    loading: false
+                });
+            }
+        })
+        .catch(error => {
+            console.log('Error: could not GET current issue. ', error);
+        })
+    }
+
+  processPosts = currentIssue => {
+        let results = currentIssue.posts;
+        // console.log('results', results);
+        results.map(post => {
+            let rawdata = JSON.parse(post.text);
+            // console.log('rawdata', rawdata);
+            let contentState = convertFromRaw(rawdata);
+            // console.log('processed', processed);
+            let editorState = EditorState.createWithContent(contentState);
+            post.text = editorState;
+            return post;
+        })
   }
 
 
@@ -107,31 +130,36 @@ class App extends Component {
     }
 
     updateCurrentIssue = event => {
+        event.preventDefault();
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        console.log('name', name);
-        console.log('value', value);
         let curr = this.state.issues.find(issue => issue.isCurrentIssue === true);
-        let newCurr = this.state.issues.find(issue => issue._id === value);
         axios.put(`http://localhost:3001/api/issues/${curr._id}`, {
             isCurrentIssue: false
         })
         .then(response => {
+            let currIndex = this.state.issues.findIndex(issue => issue._id === response.data._id);
+            let issues = this.state.issues;
+            issues[currIndex].isCurrentIssue = false;
             this.setState({
-                [curr]: {
-                    isCurrentIssue: false
-                },
                 [name]: value,
-                currentIssue: newCurr
+                currentIssue: response.data,
+                issues
             });
+            const newCurr = this.state.issues.filter(issue => issue._id === value)[0];
             axios.put(`http://localhost:3001/api/issues/${newCurr._id}`, {
                 isCurrentIssue: true
             })
                 .then(response => {
+                    const newCurrIndex = this.state.issues.findIndex(issue => issue._id === response.data._id);
+                    let issues = this.state.issues;
+                    issues[newCurrIndex].isCurrentIssue = true;
                     this.setState({
-                        currentIssue: newCurr
-                    })
+                        currentIssue: response.data,
+                        issues
+                    });
+                    this.processPosts(this.state.currentIssue);
                 })
                 .catch(error => console.log(error));
         })
@@ -140,9 +168,12 @@ class App extends Component {
 
   handleSubmitPost = event => {
         event.preventDefault();
+        let rawdata = JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()));
+        // console.log(this.rawdata);
         axios.post('http://localhost:3001/api/posts', {
             title: this.state.title,
-            text: this.state.text,
+            // text: this.state.text,
+            text: rawdata,
             author: this.state.author,
             issue: this.state.issue
         })
@@ -197,7 +228,7 @@ class App extends Component {
             this.setState({
                 isLoggedIn: true
             });
-            console.log('res', res);
+            // console.log('res', res);
         })
         .catch(error => {
             console.log('Could not log in: ', error);
@@ -225,10 +256,16 @@ class App extends Component {
 
     handleAddIssue = event => {
         event.preventDefault();
+        let isCurrent = false;
+        if (!this.state.issues.length) {
+            isCurrent = true
+            }
         axios.post('http://localhost:3001/api/issues', {
             title: this.state.issue,
+            isCurrentIssue: isCurrent
         })
         .then(response => {
+            // console.log(response);
             this.setState({
                 issues: this.state.issues.concat([response.data]),
                 issue: response.data._id,
