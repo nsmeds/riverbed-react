@@ -5,7 +5,7 @@ import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
-import { Draft, Editor, EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { Draft, Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 import Auth from '../modules/Auth';
 
 class App extends Component {
@@ -30,6 +30,9 @@ class App extends Component {
         hideNewauthor: true,
         hideNewissue: true,
         loading: true,
+        editorState: EditorState.createEmpty(),
+
+        // map functions to state so that react-router v3 will pass them down as props via clonedElement (see render method of App.js)
         handleSubmitPost: this.handleSubmitPost,
         handleInputChange: this.handleInputChange,
         getCurrentIssue: this.getCurrentIssue,
@@ -41,8 +44,9 @@ class App extends Component {
         getAuthors: this.getAuthors,
         getIssues: this.getIssues,
         updateCurrentIssue: this.updateCurrentIssue,
-        editorState: EditorState.createEmpty(),
-        onChange: this.onChange
+        onChange: this.onChange,
+        handleKeyCommand: this.handleKeyCommand,
+        _onBoldClick: this._onBoldClick
     };
 
         
@@ -57,6 +61,8 @@ class App extends Component {
     this.checkToken = this.checkToken.bind(this);
     this.logout = this.logout.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    this._onBoldClick = this._onBoldClick.bind(this);
   }
 
     componentDidMount() {
@@ -91,19 +97,42 @@ class App extends Component {
         })
     }
 
-  processPosts = currentIssue => {
+    processPosts = currentIssue => {
         let results = currentIssue.posts;
+        // console.log('results', results);
         results.map(post => {
             let rawdata = JSON.parse(post.text);
             let contentState = convertFromRaw(rawdata);
-            let editorState = EditorState.createWithContent(contentState);
+            let editorState = EditorState.createWithContent(contentState, null);
             post.text = editorState;
             return post;
         })
-  }
+    }
 
+    processPost = res => {
+        let post = res.data;
+        let rawdata = JSON.parse(post.text);
+        let contentState = convertFromRaw(rawdata);
+        let editorState = EditorState.createWithContent(contentState, null);
+        post.text = editorState;
+        return post;
+    }
 
-  handleInputChange = event => {
+    handleKeyCommand = command => {
+        const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
+        if (newState) {
+            this.onChange(newState);
+            return 'handled';
+        }
+        return 'not-handled';
+    }
+
+    _onBoldClick = event => {
+        event.preventDefault();
+        this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+    }
+
+    handleInputChange = event => {
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -155,12 +184,12 @@ class App extends Component {
                     });
                     this.processPosts(this.state.currentIssue);
                 })
-                .catch(error => console.log(error));
+                .catch(error => console.log('could not PUT new current issue', error));
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log('error updating current issue', error));
     }
-
-  handleSubmitPost = event => {
+    
+    handleSubmitPost = event => {
         event.preventDefault();
         let rawdata = JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()));
         axios.post('http://localhost:3001/api/posts', {
@@ -170,6 +199,8 @@ class App extends Component {
             issue: this.state.issue
         })
         .then(response => {
+            console.log('response', response);
+            this.processPost(response);
             if (this.state.currentIssue._id === this.state.issue) {
                 this.setState({
                     currentIssue: {
@@ -178,11 +209,11 @@ class App extends Component {
                     }
                 });
             }
-
             // clear input fields
             this.setState({
                 title: '',
-                text: ''
+                text: '',
+                editorState: EditorState.createEmpty(),
             });
             console.log('Successful POST to /posts: ', response);
         })

@@ -20,15 +20,15 @@ const Admin = props => {
                 <h2>ADMIN</h2>
                 <form className="form new-post-form" onSubmit={props.handleSubmitPost}>
                     <h5>New Post</h5>
-                    <label><span>Title:</span><input type="text" name="title" value={props.title} onChange={props.handleInputChange} /></label>
-                    <label><span>Author:</span>         
+                    <label><span className="label-span">Title:</span><input type="text" name="title" value={props.title} onChange={props.handleInputChange} /></label>
+                    <label><span className="label-span">Author:</span>         
                         <select name="author" value={props.author} onChange={props.handleInputChange}>
                             {authorList}
                             <option value="new">Add New ... </option>
                         </select>
                     </label>
                     <div id="new-author" className={props.hideNewauthor ? 'hidden' : ''}></div>
-                    <label><span>Issue:</span>
+                    <label><span className="label-span">Issue:</span>
                         <select name="issue" value={props.issue} onChange={props.handleInputChange}>
                             {issueList}
                             <option value="new">Add New ... </option>
@@ -39,7 +39,7 @@ const Admin = props => {
                     <PostEditor {...props} editorState={props.editorState} onChange={props.onChange} />
                     <button className="button">Submit</button>
                 </form>
-                <span className="select-span">Current issue: </span>
+                <span className="label-span select-span">Current issue: </span>
                 <select name="currentIssue" value={props.currentIssue._id} onChange={props.updateCurrentIssue}>
                     {issueList}
                 </select>
