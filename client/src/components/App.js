@@ -5,7 +5,7 @@ import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
 import NewIssue from './NewIssue';
-import { Draft, Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 import Auth from '../modules/Auth';
 
 class App extends Component {
@@ -46,7 +46,7 @@ class App extends Component {
         updateCurrentIssue: this.updateCurrentIssue,
         onChange: this.onChange,
         handleKeyCommand: this.handleKeyCommand,
-        _onBoldClick: this._onBoldClick
+        // _onBoldClick: this._onBoldClick
     };
 
         
@@ -62,7 +62,7 @@ class App extends Component {
     this.logout = this.logout.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this._onBoldClick = this._onBoldClick.bind(this);
+    // this._onBoldClick = this._onBoldClick.bind(this);
   }
 
     componentDidMount() {
@@ -128,7 +128,7 @@ class App extends Component {
     processPosts = currentIssue => {
         let results = currentIssue.posts;
         results.map(post => {
-            this.convertToEditor(post);
+            return this.convertToEditor(post);
         })
     }
 
@@ -146,10 +146,10 @@ class App extends Component {
         return 'not-handled';
     }
 
-    _onBoldClick = event => {
-        event.preventDefault();
-        this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
-    }
+    // _onBoldClick = event => {
+    //     event.preventDefault();
+    //     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+    // }
 
     handleInputChange = event => {
         const target = event.target;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Editor, editorState } from 'draft-js';
+import { Editor } from 'draft-js';
 
 const MainContent = props => {
     

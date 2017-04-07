@@ -7,12 +7,12 @@ class PostEditor extends Component {
     render() {
         
         // console.log('props from PostEditor', this.props);
-        const { editorState, onChange, handleKeyCommand, _onBoldClick } = this.props;
+        const { editorState, onChange, handleKeyCommand } = this.props;
 
         return (
             <div id="content" style={{ background: 'white', color: 'black' }} >
                 <div className="editor">
-                    <button onClick={_onBoldClick}>Bold</button>
+                    {/*<button onClick={_onBoldClick}>Bold</button>*/}
                     <Editor editorState={editorState} onChange={onChange} handleKeyCommand={handleKeyCommand}/>
                 </div>
             </div>
