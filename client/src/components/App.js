@@ -359,13 +359,14 @@ class App extends Component {
 
     // console.log('currentIssue from App', this.state.currentIssue)
 
-    let clonedChildren = React.cloneElement(this.props.children, this.state)
+    let clonedChildren = React.cloneElement(this.props.children, this.state);
+    let issueIndex = this.state.issues.findIndex(issue => issue._id === this.state.currentIssue._id) + 1;
 
     return ( 
       <div>
         <div id="header">
           <Link to="/"><h1>Riverbed</h1></Link>
-          <h4>{this.state.currentIssue.title} | Vol. 1, No. 1</h4>
+          <h4>{this.state.currentIssue.title} | Vol. 1, No. {issueIndex}</h4>
           <nav className="nav">
               <ul id="nav-menu-ul" className="nav-ul">
                   <li><Link to="/">Home</Link></li>
