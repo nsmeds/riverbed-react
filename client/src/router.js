@@ -6,7 +6,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import App from './components/App';
 import Home from './components/Home';
 import About from './components/About';
-import Contact from './components/Contact';
+import BackIssues from './components/BackIssues';
 import AdminContainer from './components/AdminContainer';
 import Unfound from './components/Unfound';
 
@@ -32,7 +32,7 @@ const routes = (
             <Route path="/" component={Home} />
             <Route path="about" component={About} />
             <Route path="admin" component={AdminContainer} />
-            <Route path="contact" component={Contact} />
+            <Route path="issues" component={BackIssues} />
             <Route path="*" component={Unfound} />
         </Route>
     </Router>
