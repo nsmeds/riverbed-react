@@ -97,26 +97,45 @@ class App extends Component {
         })
     }
 
-    processPosts = currentIssue => {
-        let results = currentIssue.posts;
-        // console.log('results', results);
-        results.map(post => {
-            let rawdata = JSON.parse(post.text);
-            let contentState = convertFromRaw(rawdata);
-            let editorState = EditorState.createWithContent(contentState, null);
-            post.text = editorState;
-            return post;
-        })
-    }
+    // processPosts = currentIssue => {
+    //     let results = currentIssue.posts;
+    //     results.map(post => {
+    //         let rawdata = JSON.parse(post.text);
+    //         let contentState = convertFromRaw(rawdata);
+    //         let editorState = EditorState.createWithContent(contentState, null);
+    //         post.text = editorState;
+    //         return post;
+    //     })
+    // }
 
-    processPost = res => {
-        let post = res.data;
+    // processPost = res => {
+    //     let post = res.data;
+    //     let rawdata = JSON.parse(post.text);
+    //     let contentState = convertFromRaw(rawdata);
+    //     let editorState = EditorState.createWithContent(contentState, null);
+    //     post.text = editorState;
+    //     return post;
+    // }
+
+    convertToEditor = post => {
         let rawdata = JSON.parse(post.text);
         let contentState = convertFromRaw(rawdata);
         let editorState = EditorState.createWithContent(contentState, null);
         post.text = editorState;
         return post;
     }
+
+    processPosts = currentIssue => {
+        let results = currentIssue.posts;
+        results.map(post => {
+            this.convertToEditor(post);
+        })
+    }
+
+    processPost = res => {
+        let post = res.data;
+        this.convertToEditor(post);
+    };
 
     handleKeyCommand = command => {
         const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
