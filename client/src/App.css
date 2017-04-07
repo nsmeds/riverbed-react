@@ -193,12 +193,12 @@ a:active {
 
 .menu-item {
   color: #fff;
-  height: 70vh;
+  min-height: 70vh;
   border: 1px solid #fff;
   max-width: 600px;
   padding: 0 2em 4em 2em;
   margin: 0.5em auto 2em auto;
-  background-image: url(/images/canoe.jpg);
+  background-image: url(/images/kings.jpeg);
   background-color: hsla(40,10%,0%,0.5);
   background-blend-mode: overlay;
   background-position: center;
@@ -284,6 +284,7 @@ button {
   margin-left: 3px;
   margin: 5px 0 5px 3px;
   width: 20em;
+  border-radius: 3px;
 }
 
 .form textarea {
@@ -345,15 +346,17 @@ button {
 /**** PostEditor Styles ****/
 
 #content {
-  /*height: 8em;
-  width: 20em;*/
+  margin: 1em 0;
+  border-radius: 5px;
 }
 
 .editor {
+  border-radius: 5px;
   height: 8em;
   width: 20em;
   border: 1px solid grey;
   padding: 6px;
+  text-align: left;
 }
 
 /**** Footer Styles ****/
