@@ -14,7 +14,6 @@ class AdminContainer extends Component {
         this.props.getIssues();
     }
 
-
     render() {
         return (
             <div>

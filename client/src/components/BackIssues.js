@@ -19,5 +19,4 @@ const BackIssues = props => {
     );
 }
 
-
 export default BackIssues;

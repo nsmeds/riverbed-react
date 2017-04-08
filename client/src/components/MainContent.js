@@ -23,5 +23,4 @@ const MainContent = props => {
     )
 }
 
-
 export default MainContent;

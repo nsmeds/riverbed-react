@@ -4,14 +4,14 @@ import MainContent from './MainContent';
 
 const Home = props => {
 
-  // console.log('props from Home', props);
+// console.log('props from Home', props);
 
-  return (
-    <div>
-      <Contributors {...props}/>
-      <MainContent {...props}/>
-    </div>
-  )
-}
+    return (
+        <div>
+            <Contributors {...props}/>
+            <MainContent {...props}/>
+        </div>
+        )
+    }
 
 export default Home;

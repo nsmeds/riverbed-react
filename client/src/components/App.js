@@ -10,61 +10,65 @@ import Auth from '../modules/Auth';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-        currentIssue: {
-            _id: null,
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentIssue: {
+                _id: null,
+                title: '',
+                posts: []
+            },
+            username: '',
+            password: '',
+            isLoggedIn: false,
             title: '',
-            posts: []
-        },
-        username: '',
-        password: '',
-        isLoggedIn: false,
-        title: '',
-        author: '',
-        text: '',
-        issue: '',
-        authors: [],
-        issues: [],
-        hideNewauthor: true,
-        hideNewissue: true,
-        loading: true,
-        editorState: EditorState.createEmpty(),
+            author: '',
+            text: '',
+            issue: '',
+            authors: [],
+            issues: [],
+            hideNewauthor: true,
+            hideNewissue: true,
+            loading: true,
+            editorState: EditorState.createEmpty(),
 
-        // map functions to state so that react-router v3 will pass them down as props via clonedElement (see render method of App.js)
-        handleSubmitPost: this.handleSubmitPost,
-        handleInputChange: this.handleInputChange,
-        getCurrentIssue: this.getCurrentIssue,
-        handleLogin: this.handleLogin,
-        checkToken: this.checkToken,
-        logout: this.logout,
-        handleAddAuthor: this.handleAddAuthor,
-        handleAddIssue: this.handleAddIssue,
-        getAuthors: this.getAuthors,
-        getIssues: this.getIssues,
-        updateCurrentIssue: this.updateCurrentIssue,
-        onChange: this.onChange,
-        handleKeyCommand: this.handleKeyCommand,
-        focus: this.focus,
-        // _onBoldClick: this._onBoldClick
-    };
+            // map functions to state so that react-router v3 will pass them down as props via clonedElement (see render method of App.js)
+            handleSubmitPost: this.handleSubmitPost,
+            handleInputChange: this.handleInputChange,
+            getCurrentIssue: this.getCurrentIssue,
+            handleLogin: this.handleLogin,
+            checkToken: this.checkToken,
+            logout: this.logout,
+            handleAddAuthor: this.handleAddAuthor,
+            handleAddIssue: this.handleAddIssue,
+            getAuthors: this.getAuthors,
+            getIssues: this.getIssues,
+            updateCurrentIssue: this.updateCurrentIssue,
+            onChange: this.onChange,
+            handleKeyCommand: this.handleKeyCommand,
+            processPost: this.processPost,
+            processPosts: this.processPosts
+            // focus: this.focus,
+            // _onBoldClick: this._onBoldClick
+        };
 
         
-    this.updateCurrentIssue = this.updateCurrentIssue.bind(this);
-    this.getAuthors = this.getAuthors.bind(this);
-    this.getIssues = this.getIssues.bind(this);
-    this.handleAddAuthor = this.handleAddAuthor.bind(this);
-    this.handleAddIssue = this.handleAddIssue.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmitPost = this.handleSubmitPost.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.checkToken = this.checkToken.bind(this);
-    this.logout = this.logout.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    // this.focus = this.focus.bind(this);
-    // this._onBoldClick = this._onBoldClick.bind(this);
+        this.updateCurrentIssue = this.updateCurrentIssue.bind(this);
+        this.getAuthors = this.getAuthors.bind(this);
+        this.getIssues = this.getIssues.bind(this);
+        this.handleAddAuthor = this.handleAddAuthor.bind(this);
+        this.handleAddIssue = this.handleAddIssue.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmitPost = this.handleSubmitPost.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
+        this.checkToken = this.checkToken.bind(this);
+        this.logout = this.logout.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.handleKeyCommand = this.handleKeyCommand.bind(this);
+        this.processPost = this.processPost.bind(this);
+        this.processPosts = this.processPosts.bind(this);
+        // this.focus = this.focus.bind(this);
+        // this._onBoldClick = this._onBoldClick.bind(this);
   }
 
     componentDidMount() {
@@ -82,12 +86,14 @@ class App extends Component {
     getCurrentIssue = () => {
         axios.get('http://localhost:3001/api/issues')
         .then(response => {
+            // console.log('response.data', response.data)
             if (!response.data.length) {
                 this.setState({
                     loading: false
                 });
             } else {
                 let curr = response.data.find(issue => issue.isCurrentIssue === true);
+                // console.log('curr', curr);
                 if (!curr) {                    
                     this.processPosts(response.data[0]);
                     this.setState({
@@ -101,12 +107,12 @@ class App extends Component {
                         issues
                     });
                 } else {
+                    this.processPosts(curr);
                     this.setState({
                         issues: response.data,
                         currentIssue: curr,
                         loading: false
                     });
-                    this.processPosts(curr);
                 }
             }
         })
@@ -289,7 +295,6 @@ class App extends Component {
             this.setState({
                 isLoggedIn: true
             });
-            // console.log('res', res);
         })
         .catch(error => {
             console.log('Could not log in: ', error);
@@ -326,7 +331,6 @@ class App extends Component {
             isCurrentIssue: isCurrent
         })
         .then(response => {
-            // console.log(response);
             this.setState({
                 issues: this.state.issues.concat([response.data]),
                 issue: response.data._id,
@@ -374,35 +378,31 @@ class App extends Component {
             }
     }
 
-  render() {
+    render() {
 
-    // console.log('currentIssue from App', this.state.currentIssue)
+        let clonedChildren = React.cloneElement(this.props.children, this.state);
+        let issueIndex = this.state.issues.findIndex(issue => issue._id === this.state.currentIssue._id) + 1;
 
-    let clonedChildren = React.cloneElement(this.props.children, this.state);
-    let issueIndex = this.state.issues.findIndex(issue => issue._id === this.state.currentIssue._id) + 1;
-
-    return ( 
-      <div>
-        <div id="header">
-          <Link to="/"><h1>Riverbed</h1></Link>
-          <h4>{this.state.currentIssue.title} | Vol. 1, No. {issueIndex}</h4>
-        </div>
-        <nav className="nav">
-            <ul id="nav-menu-ul" className="nav-ul">
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/about">About</Link></li>
-                <li><Link to="/issues">Issues</Link></li>
-                <li><Link to="/admin">Account</Link></li>
-            </ul>
-        </nav>
-        <div id="main">
-          {
-            (this.state.loading) ? <p>Loading ... </p> : <div>{this.props.children && clonedChildren}</div>
-          }
-        </div>
-      </div>
-    );
-  }
+        return ( 
+            <div>
+                <div id="header">
+                    <Link to="/"><h1>Riverbed</h1></Link>
+                    <h4>{this.state.currentIssue.title} | Vol. 1, No. {issueIndex}</h4>
+                </div>
+                <nav className="nav">
+                    <ul id="nav-menu-ul" className="nav-ul">
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                        <li><Link to="/issues">Issues</Link></li>
+                        <li><Link to="/admin">Account</Link></li>
+                    </ul>
+                </nav>
+                <div id="main">
+                    {(this.state.loading) ? <p>Loading ... </p> : <div>{this.props.children && clonedChildren}</div>}
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;
