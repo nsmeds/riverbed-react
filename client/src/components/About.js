@@ -4,8 +4,8 @@ const About = props => {
     return (
         <div className="menu-item">
             <h2>About Riverbed</h2>
-            <p><blockquote className="blockquote">"To the (person) who is seeking the sanction of life in poetry, the namby-pamby is an intolerable dissipation." - Wallace Stevens</blockquote>
-            RIVERBED is an online journal of poetry, intended to provide a venue for voices that take risks, are unafraid of stillness, and stand their ground amidst the fray. 
+            <blockquote className="blockquote">"To the (person) who is seeking the sanction of life in poetry, the namby-pamby is an intolerable dissipation." - Wallace Stevens</blockquote>
+            <p>RIVERBED is an online journal of poetry, intended to provide a venue for voices that take risks, are unafraid of stillness, and stand their ground amidst the fray. 
             <br /><br />
             We are currently hard at work building our first issue.
             To be notified when it is published, or if you'd like to contribute work for publication, <a href="mailto:riverbed@riverbedpoetry.com">email us</a>. Preferred format is pdf, or paste your work in the body of the email.</p>
@@ -16,7 +16,6 @@ const About = props => {
             </form>*/}
         </div>
     );
-
 }
 
 export default About;
