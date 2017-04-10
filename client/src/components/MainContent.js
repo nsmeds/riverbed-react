@@ -2,8 +2,6 @@ import React from 'react';
 import { Editor } from 'draft-js';
 
 const MainContent = props => {
-    
-    // console.log('props from MainContent', props);
 
     let results = props.currentIssue.posts;
 

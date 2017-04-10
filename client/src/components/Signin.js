@@ -2,8 +2,6 @@ import React from 'react';
 
 const Signin = props => {
 
-    // console.log('props from Signin', props);
-
     let newUser = {
         username: props.username,
         password: props.password

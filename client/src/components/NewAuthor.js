@@ -2,8 +2,6 @@ import React from 'react';
 
 const NewAuthor = props => {
 
-    // console.log('props NewAuthor', props);
-
     let newAuthor = {
         name: props.name,
         bio: props.bio
