@@ -51,25 +51,6 @@ class App extends Component {
             // focus: this.focus,
             // _onBoldClick: this._onBoldClick
         };
-
-        
-        // this.updateCurrentIssue = this.updateCurrentIssue.bind(this);
-        // this.getAuthors = this.getAuthors.bind(this);
-        // this.getIssues = this.getIssues.bind(this);
-        // this.handleAddAuthor = this.handleAddAuthor.bind(this);
-        // this.handleAddIssue = this.handleAddIssue.bind(this);
-        // this.handleInputChange = this.handleInputChange.bind(this);
-        // this.handleSubmitPost = this.handleSubmitPost.bind(this);
-        // this.handleLogin = this.handleLogin.bind(this);
-        // this.checkToken = this.checkToken.bind(this);
-        // this.logout = this.logout.bind(this);
-        // this.onChange = this.onChange.bind(this);
-        // this.handleKeyCommand = this.handleKeyCommand.bind(this);
-        // this.processPost = this.processPost.bind(this);
-        // this.processPosts = this.processPosts.bind(this);
-
-        // this.focus = this.focus.bind(this);
-        // this._onBoldClick = this._onBoldClick.bind(this);
   }
 
     componentDidMount() {
@@ -82,19 +63,15 @@ class App extends Component {
         this.setState({editorState});
     }
 
-    // focus = () => this.refs.editor.focus();
-
     getCurrentIssue = () => {
         axios.get('http://localhost:3001/api/issues')
         .then(response => {
-            // console.log('response.data', response.data)
             if (!response.data.length) {
                 this.setState({
                     loading: false
                 });
             } else {
                 let curr = response.data.find(issue => issue.isCurrentIssue === true);
-                // console.log('curr', curr);
                 if (!curr) {                    
                     this.processPosts(response.data[0]);
                     this.setState({
@@ -121,26 +98,6 @@ class App extends Component {
             console.log('Error: could not GET current issue. ', error);
         })
     }
-
-    // processPosts = currentIssue => {
-    //     let results = currentIssue.posts;
-    //     results.map(post => {
-    //         let rawdata = JSON.parse(post.text);
-    //         let contentState = convertFromRaw(rawdata);
-    //         let editorState = EditorState.createWithContent(contentState, null);
-    //         post.text = editorState;
-    //         return post;
-    //     })
-    // }
-
-    // processPost = res => {
-    //     let post = res.data;
-    //     let rawdata = JSON.parse(post.text);
-    //     let contentState = convertFromRaw(rawdata);
-    //     let editorState = EditorState.createWithContent(contentState, null);
-    //     post.text = editorState;
-    //     return post;
-    // }
 
     convertToEditor = post => {
         let rawdata = JSON.parse(post.text);
@@ -245,7 +202,6 @@ class App extends Component {
             issue: this.state.issue
         })
         .then(response => {
-            console.log('response', response);
             this.processPost(response);
             if (this.state.currentIssue._id === this.state.issue) {
                 this.setState({
@@ -298,7 +254,6 @@ class App extends Component {
             password: this.state.password
         })
         .then(res => {
-            console.log('res', res);
             Auth.authenticateUser(res.data.token);
             this.setState({
                 isLoggedIn: true
