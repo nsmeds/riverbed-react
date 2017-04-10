@@ -238,13 +238,20 @@ a:active {
   text-align: left;
 }
 
-.wrap {
+/*.wrap {
   min-height: 100%;
+}*/
+
+.form-wrap {
+  border: 1px solid white;
+  padding-bottom: 1.2em;
+  margin-bottom: 1.2em;
 }
 
 .blockquote {
   font-size: 0.9em;
   font-style: italic;
+  font-weight: 300;
 }
 
 /**** Form Styles ****/
@@ -255,7 +262,7 @@ a:active {
   font-weight: 300;
   font-size: 0.9em;
   max-width: 25em;
-  margin: 2em auto;
+  margin: 1.2em auto;
 }
 
 .form label {
@@ -272,6 +279,9 @@ a:active {
 .form h5 {
   font-weight: 400;
   font-size: 0.9em;
+  text-transform: uppercase;
+  align-self: center;
+  margin-bottom: 1em;
 }
 
 .form input,
@@ -357,6 +367,10 @@ button {
   border: 1px solid grey;
   padding: 6px;
   text-align: left;
+  font-size: 0.9em;
+  color: hsl(40,10%,20%);
+  font-weight: 400;
+  font-family: 'Lato', sans-serif;
 }
 
 /**** Footer Styles ****/
