@@ -1,4 +1,4 @@
-# riverbed-react
+# react-ui
 A React-based front end for an online magazine application.
 
 ## Installation

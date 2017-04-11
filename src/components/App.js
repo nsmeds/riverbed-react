@@ -64,7 +64,7 @@ class App extends Component {
     }
 
     getCurrentIssue = () => {
-        axios.get('http://localhost:3001/api/issues')
+        axios.get('/api/issues')
         .then(response => {
             if (!response.data.length) {
                 this.setState({
@@ -162,7 +162,7 @@ class App extends Component {
         const value = target.value;
         const name = target.name;
         const currIndex = this.state.issues.findIndex(issue => issue.isCurrentIssue === true);
-        axios.put(`http://localhost:3001/api/issues/${this.state.issues[currIndex]._id}`, {
+        axios.put(`/api/issues/${this.state.issues[currIndex]._id}`, {
             isCurrentIssue: false
         })
         .then(response => {
@@ -174,7 +174,7 @@ class App extends Component {
                 issues
             });
             const newCurrIndex = this.state.issues.findIndex(issue => issue._id === value);
-            axios.put(`http://localhost:3001/api/issues/${this.state.issues[newCurrIndex]._id}`, {
+            axios.put(`/api/issues/${this.state.issues[newCurrIndex]._id}`, {
                 isCurrentIssue: true
             })
                 .then(response => {
@@ -195,7 +195,7 @@ class App extends Component {
         event.preventDefault();
         if (this.checkToken() === false) return;
         let rawdata = JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()));
-        axios.post('http://localhost:3001/api/posts', {
+        axios.post('/api/posts', {
             title: this.state.title,
             text: rawdata,
             author: this.state.author,
@@ -233,7 +233,7 @@ class App extends Component {
         let config = {
             headers: {'Authorization': token}
         };
-        axios.get('http://localhost:3001/api/auth/verify', config)
+        axios.get('/api/auth/verify', config)
             .then(this.setState({isLoggedIn: true}))
             .catch(() => this.logout());
     }
@@ -249,7 +249,7 @@ class App extends Component {
 
     handleLogin = event => {
         event.preventDefault();
-        axios.post('http://localhost:3001/api/auth/signin', {
+        axios.post('/api/auth/signin', {
             username: this.state.username,
             password: this.state.password
         })
@@ -266,7 +266,7 @@ class App extends Component {
 
     handleAddAuthor = event => {
         event.preventDefault();
-        axios.post('http://localhost:3001/api/authors', {
+        axios.post('/api/authors', {
             name: this.state.name,
             bio: this.state.bio
         })
@@ -289,7 +289,7 @@ class App extends Component {
         if (!this.state.issues.length) {
             isCurrent = true
             }
-        axios.post('http://localhost:3001/api/issues', {
+        axios.post('/api/issues', {
             title: this.state.issue,
             isCurrentIssue: isCurrent
         })
@@ -307,7 +307,7 @@ class App extends Component {
     }
 
     getAuthors = () => {
-        axios.get(`http://localhost:3001/api/authors`)
+        axios.get('/api/authors')
         .then(response => {
             // If no authors in DB, render NewAuthor component by default.
             if (!response.data.length) {
