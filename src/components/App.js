@@ -51,6 +51,7 @@ class App extends Component {
             // focus: this.focus,
             // _onBoldClick: this._onBoldClick
         };
+        
   }
 
     componentDidMount() {
