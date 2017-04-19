@@ -261,7 +261,6 @@ class App extends Component {
         })
     }
 
-
     handleLogin = event => {
         event.preventDefault();
         axios.post('/api/auth/signin', {
