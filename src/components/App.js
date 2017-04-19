@@ -157,15 +157,49 @@ class App extends Component {
             }
     }
 
+    checkToken = () => {
+        let token = Auth.getToken();
+        if (!token) {
+            this.logout();
+            return false;
+        };
+        let config = {
+            headers: {'Authorization': token}
+        };
+        axios.get('/api/auth/verify', config)
+            .then(this.setState({isLoggedIn: true}))
+            .catch(() => this.logout());
+        return token;
+    }
+
+    setConfig = () => {
+        let token = this.checkToken();
+        if (token === false) return;
+        const config = {
+            headers: {'Authorization': token}
+        };
+        return config;
+    }
+
+    logout = () => {
+        this.setState({
+            isLoggedIn: false,
+            username: '',
+            password: ''
+        });
+        Auth.deauthenticate();
+    }
+
     updateCurrentIssue = event => {
         event.preventDefault();
+        let config = this.setConfig();
         const target = event.target;
         const value = target.value;
         const name = target.name;
         const currIndex = this.state.issues.findIndex(issue => issue.isCurrentIssue === true);
         axios.put(`/api/issues/${this.state.issues[currIndex]._id}`, {
             isCurrentIssue: false
-        })
+        }, config)
         .then(response => {
             let issues = this.state.issues;
             issues[currIndex].isCurrentIssue = false;
@@ -177,7 +211,7 @@ class App extends Component {
             const newCurrIndex = this.state.issues.findIndex(issue => issue._id === value);
             axios.put(`/api/issues/${this.state.issues[newCurrIndex]._id}`, {
                 isCurrentIssue: true
-            })
+            }, config)
                 .then(response => {
                     let issues = this.state.issues;
                     issues[newCurrIndex].isCurrentIssue = true;
@@ -194,13 +228,7 @@ class App extends Component {
     
     handleSubmitPost = event => {
         event.preventDefault();
-        // if (this.checkToken() === false) return;
-        let token = Auth.getToken();
-        if (token === false) return;
-        // console.log('token', token);
-        let config = {
-            headers: {'Authorization': token}
-        };
+        let config = this.setConfig();
         let rawdata = JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()));
         axios.post('/api/posts', {
             title: this.state.title,
@@ -233,28 +261,6 @@ class App extends Component {
         })
     }
 
-    checkToken = () => {
-        let token = Auth.getToken();
-        if (!token) {
-            this.logout();
-            return false;
-        };
-        let config = {
-            headers: {'Authorization': token}
-        };
-        axios.get('/api/auth/verify', config)
-            .then(this.setState({isLoggedIn: true}))
-            .catch(() => this.logout());
-    }
-
-    logout = () => {
-        this.setState({
-            isLoggedIn: false,
-            username: '',
-            password: ''
-        });
-        Auth.deauthenticate();
-    }
 
     handleLogin = event => {
         event.preventDefault();
@@ -264,7 +270,6 @@ class App extends Component {
         })
         .then(res => {
             Auth.authenticateUser(res.data.token);
-            console.log('res.data from handleLogin', res.data);
             this.setState({
                 isLoggedIn: true,
                 roles: res.data.roles
@@ -277,10 +282,11 @@ class App extends Component {
 
     handleAddAuthor = event => {
         event.preventDefault();
+        let config = this.setConfig();
         axios.post('/api/authors', {
             name: this.state.name,
             bio: this.state.bio
-        })
+        }, config)
         .then(response => {
             this.setState({
                 authors: this.state.authors.concat([response.data]),
@@ -296,6 +302,7 @@ class App extends Component {
 
     handleAddIssue = event => {
         event.preventDefault();
+        let config = this.setConfig();
         let isCurrent = false;
         if (!this.state.issues.length) {
             isCurrent = true
@@ -303,7 +310,7 @@ class App extends Component {
         axios.post('/api/issues', {
             title: this.state.issue,
             isCurrentIssue: isCurrent
-        })
+        }, config)
         .then(response => {
             this.setState({
                 issues: this.state.issues.concat([response.data]),
