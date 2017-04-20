@@ -44,6 +44,7 @@ class App extends Component {
             handleAddIssue: this.handleAddIssue,
             getAuthors: this.getAuthors,
             getIssues: this.getIssues,
+            getSingleIssue: this.getSingleIssue,
             updateCurrentIssue: this.updateCurrentIssue,
             onChange: this.onChange,
             handleKeyCommand: this.handleKeyCommand,
@@ -356,6 +357,22 @@ class App extends Component {
                     issue: this.state.issues[0]._id
                 });
             }
+    }
+
+    getSingleIssue = event => {
+        event.preventDefault();
+        const target = event.target;
+        const value = target.value;
+        axios.get(`/api/issues/${value}`)
+            .then(response => {
+                this.setState({
+                    currentIssue: response.data
+                });
+                this.processPosts(this.state.currentIssue);
+            })
+            .catch(error => {
+                console.log('Error: could not GET issue. ', error);
+            })
     }
 
     render() {
