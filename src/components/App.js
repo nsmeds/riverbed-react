@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
-import { EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, ContentState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 import axios from 'axios';
 import smoothScroll from 'smooth-scroll';
 import NewAuthor from './NewAuthor';
@@ -250,10 +250,11 @@ class App extends Component {
                 });
             }
             // clear input fields
+            const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
             this.setState({
                 title: '',
                 text: '',
-                editorState: EditorState.createEmpty(),
+                editorState
             });
             console.log('Successful POST to /posts: ', response);
         })
